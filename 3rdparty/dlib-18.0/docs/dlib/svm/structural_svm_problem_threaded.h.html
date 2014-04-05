@@ -1,0 +1,130 @@
+<html><!-- Created using the cpp_pretty_printer from the dlib C++ library.  See http://dlib.net for updates. --><head><title>dlib C++ Library - structural_svm_problem_threaded.h</title></head><body bgcolor='white'><pre>
+<font color='#009900'>// Copyright (C) 2011  Davis E. King (davis@dlib.net)
+</font><font color='#009900'>// License: Boost Software License   See LICENSE.txt for the full license.
+</font><font color='#0000FF'>#ifndef</font> DLIB_STRUCTURAL_SVM_PRObLEM_THREADED_H__
+<font color='#0000FF'>#define</font> DLIB_STRUCTURAL_SVM_PRObLEM_THREADED_H__
+
+<font color='#0000FF'>#include</font> "<a style='text-decoration:none' href='structural_svm_problem_threaded_abstract.h.html'>structural_svm_problem_threaded_abstract.h</a>"
+<font color='#0000FF'>#include</font> "<a style='text-decoration:none' href='../algs.h.html'>../algs.h</a>"
+<font color='#0000FF'>#include</font> <font color='#5555FF'>&lt;</font>vector<font color='#5555FF'>&gt;</font>
+<font color='#0000FF'>#include</font> "<a style='text-decoration:none' href='structural_svm_problem.h.html'>structural_svm_problem.h</a>"
+<font color='#0000FF'>#include</font> "<a style='text-decoration:none' href='../matrix.h.html'>../matrix.h</a>"
+<font color='#0000FF'>#include</font> "<a style='text-decoration:none' href='sparse_vector.h.html'>sparse_vector.h</a>"
+<font color='#0000FF'>#include</font> <font color='#5555FF'>&lt;</font>iostream<font color='#5555FF'>&gt;</font>
+<font color='#0000FF'>#include</font> "<a style='text-decoration:none' href='../threads.h.html'>../threads.h</a>"
+
+<font color='#0000FF'>namespace</font> dlib
+<b>{</b>
+
+<font color='#009900'>// ----------------------------------------------------------------------------------------
+</font>
+    <font color='#0000FF'>template</font> <font color='#5555FF'>&lt;</font>
+        <font color='#0000FF'>typename</font> matrix_type_,
+        <font color='#0000FF'>typename</font> feature_vector_type_ <font color='#5555FF'>=</font> matrix_type_
+        <font color='#5555FF'>&gt;</font>
+    <font color='#0000FF'>class</font> <b><a name='structural_svm_problem_threaded'></a>structural_svm_problem_threaded</b> : <font color='#0000FF'>public</font> structural_svm_problem<font color='#5555FF'>&lt;</font>matrix_type_,feature_vector_type_<font color='#5555FF'>&gt;</font> 
+    <b>{</b>
+    <font color='#0000FF'>public</font>:
+
+        <font color='#0000FF'>typedef</font> matrix_type_ matrix_type;
+        <font color='#0000FF'>typedef</font> <font color='#0000FF'>typename</font> matrix_type::type scalar_type;
+        <font color='#0000FF'>typedef</font> feature_vector_type_ feature_vector_type;
+
+        <font color='#0000FF'>explicit</font> <b><a name='structural_svm_problem_threaded'></a>structural_svm_problem_threaded</b> <font face='Lucida Console'>(</font>
+            <font color='#0000FF'><u>unsigned</u></font> <font color='#0000FF'><u>long</u></font> num_threads
+        <font face='Lucida Console'>)</font> :
+            tp<font face='Lucida Console'>(</font>num_threads<font face='Lucida Console'>)</font>
+        <b>{</b><b>}</b>
+
+        <font color='#0000FF'><u>unsigned</u></font> <font color='#0000FF'><u>long</u></font> <b><a name='get_num_threads'></a>get_num_threads</b> <font face='Lucida Console'>(</font>
+        <font face='Lucida Console'>)</font> <font color='#0000FF'>const</font> <b>{</b> <font color='#0000FF'>return</font> tp.<font color='#BB00BB'>num_threads_in_pool</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>; <b>}</b>
+
+    <font color='#0000FF'>private</font>:
+
+        <font color='#0000FF'>struct</font> <b><a name='binder'></a>binder</b>
+        <b>{</b>
+            <b><a name='binder'></a>binder</b> <font face='Lucida Console'>(</font>
+                <font color='#0000FF'>const</font> structural_svm_problem_threaded<font color='#5555FF'>&amp;</font> self_,
+                matrix_type<font color='#5555FF'>&amp;</font> w_,
+                matrix_type<font color='#5555FF'>&amp;</font> subgradient_,
+                scalar_type<font color='#5555FF'>&amp;</font> total_loss_
+            <font face='Lucida Console'>)</font> : self<font face='Lucida Console'>(</font>self_<font face='Lucida Console'>)</font>, w<font face='Lucida Console'>(</font>w_<font face='Lucida Console'>)</font>, subgradient<font face='Lucida Console'>(</font>subgradient_<font face='Lucida Console'>)</font>, total_loss<font face='Lucida Console'>(</font>total_loss_<font face='Lucida Console'>)</font> <b>{</b><b>}</b>
+
+            <font color='#0000FF'><u>void</u></font> <b><a name='call_oracle'></a>call_oracle</b> <font face='Lucida Console'>(</font>
+                <font color='#0000FF'><u>long</u></font> begin,
+                <font color='#0000FF'><u>long</u></font> end
+            <font face='Lucida Console'>)</font> 
+            <b>{</b>
+                <font color='#009900'>// If we are only going to call the separation oracle once then
+</font>                <font color='#009900'>// don't run the slightly more complex for loop version of this code.
+</font>                <font color='#0000FF'>if</font> <font face='Lucida Console'>(</font>end<font color='#5555FF'>-</font>begin <font color='#5555FF'>&lt;</font><font color='#5555FF'>=</font> <font color='#979000'>1</font><font face='Lucida Console'>)</font>
+                <b>{</b>
+                    scalar_type loss;
+                    feature_vector_type ftemp;
+                    self.<font color='#BB00BB'>separation_oracle_cached</font><font face='Lucida Console'>(</font>begin, w, loss, ftemp<font face='Lucida Console'>)</font>;
+
+                    auto_mutex <font color='#BB00BB'>lock</font><font face='Lucida Console'>(</font>self.accum_mutex<font face='Lucida Console'>)</font>;
+                    total_loss <font color='#5555FF'>+</font><font color='#5555FF'>=</font> loss;
+                    <font color='#BB00BB'>add_to</font><font face='Lucida Console'>(</font>subgradient, ftemp<font face='Lucida Console'>)</font>;
+                <b>}</b>
+                <font color='#0000FF'>else</font>
+                <b>{</b>
+                    scalar_type loss <font color='#5555FF'>=</font> <font color='#979000'>0</font>;
+                    matrix_type <font color='#BB00BB'>faccum</font><font face='Lucida Console'>(</font>subgradient.<font color='#BB00BB'>size</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>,<font color='#979000'>1</font><font face='Lucida Console'>)</font>;
+                    faccum <font color='#5555FF'>=</font> <font color='#979000'>0</font>;
+
+                    feature_vector_type ftemp;
+
+                    <font color='#0000FF'>for</font> <font face='Lucida Console'>(</font><font color='#0000FF'><u>long</u></font> i <font color='#5555FF'>=</font> begin; i <font color='#5555FF'>&lt;</font> end; <font color='#5555FF'>+</font><font color='#5555FF'>+</font>i<font face='Lucida Console'>)</font>
+                    <b>{</b>
+                        scalar_type loss_temp;
+                        self.<font color='#BB00BB'>separation_oracle_cached</font><font face='Lucida Console'>(</font>i, w, loss_temp, ftemp<font face='Lucida Console'>)</font>;
+                        loss <font color='#5555FF'>+</font><font color='#5555FF'>=</font> loss_temp;
+                        <font color='#BB00BB'>add_to</font><font face='Lucida Console'>(</font>faccum, ftemp<font face='Lucida Console'>)</font>;
+                    <b>}</b>
+
+                    auto_mutex <font color='#BB00BB'>lock</font><font face='Lucida Console'>(</font>self.accum_mutex<font face='Lucida Console'>)</font>;
+                    total_loss <font color='#5555FF'>+</font><font color='#5555FF'>=</font> loss;
+                    <font color='#BB00BB'>add_to</font><font face='Lucida Console'>(</font>subgradient, faccum<font face='Lucida Console'>)</font>;
+                <b>}</b>
+            <b>}</b>
+
+            <font color='#0000FF'>const</font> structural_svm_problem_threaded<font color='#5555FF'>&amp;</font> self;
+            matrix_type<font color='#5555FF'>&amp;</font> w;
+            matrix_type<font color='#5555FF'>&amp;</font> subgradient;
+            scalar_type<font color='#5555FF'>&amp;</font> total_loss;
+        <b>}</b>;
+
+
+        <font color='#0000FF'>virtual</font> <font color='#0000FF'><u>void</u></font> <b><a name='call_separation_oracle_on_all_samples'></a>call_separation_oracle_on_all_samples</b> <font face='Lucida Console'>(</font>
+            matrix_type<font color='#5555FF'>&amp;</font> w,
+            matrix_type<font color='#5555FF'>&amp;</font> subgradient,
+            scalar_type<font color='#5555FF'>&amp;</font> total_loss
+        <font face='Lucida Console'>)</font> <font color='#0000FF'>const</font>
+        <b>{</b>
+            <font color='#0000FF'>const</font> <font color='#0000FF'><u>long</u></font> num <font color='#5555FF'>=</font> <font color='#0000FF'>this</font><font color='#5555FF'>-</font><font color='#5555FF'>&gt;</font><font color='#BB00BB'>get_num_samples</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>;
+
+            <font color='#009900'>// how many samples to process in a single task (aim for 100 jobs per thread)
+</font>            <font color='#0000FF'>const</font> <font color='#0000FF'><u>long</u></font> block_size <font color='#5555FF'>=</font> std::max<font color='#5555FF'>&lt;</font><font color='#0000FF'><u>long</u></font><font color='#5555FF'>&gt;</font><font face='Lucida Console'>(</font><font color='#979000'>1</font>, num <font color='#5555FF'>/</font> <font face='Lucida Console'>(</font><font color='#979000'>1</font><font color='#5555FF'>+</font>tp.<font color='#BB00BB'>num_threads_in_pool</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font><font color='#5555FF'>*</font><font color='#979000'>100</font><font face='Lucida Console'>)</font><font face='Lucida Console'>)</font>;
+
+            binder <font color='#BB00BB'>b</font><font face='Lucida Console'>(</font><font color='#5555FF'>*</font><font color='#0000FF'>this</font>, w, subgradient, total_loss<font face='Lucida Console'>)</font>;
+            <font color='#0000FF'>for</font> <font face='Lucida Console'>(</font><font color='#0000FF'><u>long</u></font> i <font color='#5555FF'>=</font> <font color='#979000'>0</font>; i <font color='#5555FF'>&lt;</font> num; i<font color='#5555FF'>+</font><font color='#5555FF'>=</font>block_size<font face='Lucida Console'>)</font>
+            <b>{</b>
+                tp.<font color='#BB00BB'>add_task</font><font face='Lucida Console'>(</font>b, <font color='#5555FF'>&amp;</font>binder::call_oracle, i, std::<font color='#BB00BB'>min</font><font face='Lucida Console'>(</font>i<font color='#5555FF'>+</font>block_size, num<font face='Lucida Console'>)</font><font face='Lucida Console'>)</font>;
+            <b>}</b>
+            tp.<font color='#BB00BB'>wait_for_all_tasks</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>;
+        <b>}</b>
+
+        <font color='#0000FF'>mutable</font> thread_pool tp;
+        <font color='#0000FF'>mutable</font> mutex accum_mutex;
+    <b>}</b>;
+
+<font color='#009900'>// ----------------------------------------------------------------------------------------
+</font>
+<b>}</b>
+
+<font color='#0000FF'>#endif</font> <font color='#009900'>// DLIB_STRUCTURAL_SVM_PRObLEM_THREADED_H__
+</font>
+
+
+</pre></body></html>

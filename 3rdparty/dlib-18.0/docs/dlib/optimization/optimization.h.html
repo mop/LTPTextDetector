@@ -1,0 +1,390 @@
+<html><!-- Created using the cpp_pretty_printer from the dlib C++ library.  See http://dlib.net for updates. --><head><title>dlib C++ Library - optimization.h</title></head><body bgcolor='white'><pre>
+<font color='#009900'>// Copyright (C) 2008  Davis E. King (davis@dlib.net)
+</font><font color='#009900'>// License: Boost Software License   See LICENSE.txt for the full license.
+</font><font color='#0000FF'>#ifndef</font> DLIB_OPTIMIZATIOn_H_
+<font color='#0000FF'>#define</font> DLIB_OPTIMIZATIOn_H_
+
+<font color='#0000FF'>#include</font> <font color='#5555FF'>&lt;</font>cmath<font color='#5555FF'>&gt;</font>
+<font color='#0000FF'>#include</font> <font color='#5555FF'>&lt;</font>limits<font color='#5555FF'>&gt;</font>
+<font color='#0000FF'>#include</font> "<a style='text-decoration:none' href='optimization_abstract.h.html'>optimization_abstract.h</a>"
+<font color='#0000FF'>#include</font> "<a style='text-decoration:none' href='optimization_search_strategies.h.html'>optimization_search_strategies.h</a>"
+<font color='#0000FF'>#include</font> "<a style='text-decoration:none' href='optimization_stop_strategies.h.html'>optimization_stop_strategies.h</a>"
+<font color='#0000FF'>#include</font> "<a style='text-decoration:none' href='optimization_line_search.h.html'>optimization_line_search.h</a>"
+
+<font color='#0000FF'>namespace</font> dlib
+<b>{</b>
+
+<font color='#009900'>// ----------------------------------------------------------------------------------------
+</font><font color='#009900'>// ----------------------------------------------------------------------------------------
+</font><font color='#009900'>//                    Functions that transform other functions  
+</font><font color='#009900'>// ----------------------------------------------------------------------------------------
+</font><font color='#009900'>// ----------------------------------------------------------------------------------------
+</font>
+    <font color='#0000FF'>template</font> <font color='#5555FF'>&lt;</font><font color='#0000FF'>typename</font> funct<font color='#5555FF'>&gt;</font>
+    <font color='#0000FF'>class</font> <b><a name='central_differences'></a>central_differences</b>
+    <b>{</b>
+    <font color='#0000FF'>public</font>:
+        <font color='#009900'>// You get an error on this line when you pass in a global function to this function.
+</font>        <font color='#009900'>// You have to either use a function object or pass a pointer to your global function
+</font>        <font color='#009900'>// by taking its address using the &amp; operator.  (This check is here because gcc 4.0
+</font>        <font color='#009900'>// has a bug that causes it to silently corrupt return values from functions that
+</font>        <font color='#009900'>// invoked through a reference)
+</font>        <b><a name='COMPILE_TIME_ASSERT'></a>COMPILE_TIME_ASSERT</b><font face='Lucida Console'>(</font>is_function<font color='#5555FF'>&lt;</font>funct<font color='#5555FF'>&gt;</font>::value <font color='#5555FF'>=</font><font color='#5555FF'>=</font> <font color='#979000'>false</font><font face='Lucida Console'>)</font>;
+
+        <b><a name='central_differences'></a>central_differences</b><font face='Lucida Console'>(</font><font color='#0000FF'>const</font> funct<font color='#5555FF'>&amp;</font> f_, <font color='#0000FF'><u>double</u></font> eps_ <font color='#5555FF'>=</font> <font color='#979000'>1e</font><font color='#5555FF'>-</font><font color='#979000'>7</font><font face='Lucida Console'>)</font> : f<font face='Lucida Console'>(</font>f_<font face='Lucida Console'>)</font>, eps<font face='Lucida Console'>(</font>eps_<font face='Lucida Console'>)</font><b>{</b><b>}</b>
+
+        <font color='#0000FF'>template</font> <font color='#5555FF'>&lt;</font><font color='#0000FF'>typename</font> T<font color='#5555FF'>&gt;</font>
+        <font color='#0000FF'>typename</font> T::matrix_type <b><a name='operator'></a>operator</b><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font><font face='Lucida Console'>(</font><font color='#0000FF'>const</font> T<font color='#5555FF'>&amp;</font> x<font face='Lucida Console'>)</font> <font color='#0000FF'>const</font>
+        <b>{</b>
+            <font color='#009900'>// T must be some sort of dlib matrix 
+</font>            <font color='#BB00BB'>COMPILE_TIME_ASSERT</font><font face='Lucida Console'>(</font>is_matrix<font color='#5555FF'>&lt;</font>T<font color='#5555FF'>&gt;</font>::value<font face='Lucida Console'>)</font>;
+
+            <font color='#0000FF'>typename</font> T::matrix_type <font color='#BB00BB'>der</font><font face='Lucida Console'>(</font>x.<font color='#BB00BB'>size</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font><font face='Lucida Console'>)</font>;
+            <font color='#0000FF'>typename</font> T::matrix_type <font color='#BB00BB'>e</font><font face='Lucida Console'>(</font>x<font face='Lucida Console'>)</font>;
+            <font color='#0000FF'>for</font> <font face='Lucida Console'>(</font><font color='#0000FF'><u>long</u></font> i <font color='#5555FF'>=</font> <font color='#979000'>0</font>; i <font color='#5555FF'>&lt;</font> x.<font color='#BB00BB'>size</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>; <font color='#5555FF'>+</font><font color='#5555FF'>+</font>i<font face='Lucida Console'>)</font>
+            <b>{</b>
+                <font color='#0000FF'>const</font> <font color='#0000FF'><u>double</u></font> old_val <font color='#5555FF'>=</font> <font color='#BB00BB'>e</font><font face='Lucida Console'>(</font>i<font face='Lucida Console'>)</font>;
+
+                <font color='#BB00BB'>e</font><font face='Lucida Console'>(</font>i<font face='Lucida Console'>)</font> <font color='#5555FF'>+</font><font color='#5555FF'>=</font> eps;
+                <font color='#0000FF'>const</font> <font color='#0000FF'><u>double</u></font> delta_plus <font color='#5555FF'>=</font> <font color='#BB00BB'>f</font><font face='Lucida Console'>(</font>e<font face='Lucida Console'>)</font>;
+                <font color='#BB00BB'>e</font><font face='Lucida Console'>(</font>i<font face='Lucida Console'>)</font> <font color='#5555FF'>=</font> old_val <font color='#5555FF'>-</font> eps;
+                <font color='#0000FF'>const</font> <font color='#0000FF'><u>double</u></font> delta_minus <font color='#5555FF'>=</font> <font color='#BB00BB'>f</font><font face='Lucida Console'>(</font>e<font face='Lucida Console'>)</font>;
+
+                <font color='#BB00BB'>der</font><font face='Lucida Console'>(</font>i<font face='Lucida Console'>)</font> <font color='#5555FF'>=</font> <font face='Lucida Console'>(</font>delta_plus <font color='#5555FF'>-</font> delta_minus<font face='Lucida Console'>)</font><font color='#5555FF'>/</font><font face='Lucida Console'>(</font><font color='#979000'>2</font><font color='#5555FF'>*</font>eps<font face='Lucida Console'>)</font>;
+
+                <font color='#009900'>// and finally restore the old value of this element
+</font>                <font color='#BB00BB'>e</font><font face='Lucida Console'>(</font>i<font face='Lucida Console'>)</font> <font color='#5555FF'>=</font> old_val;
+            <b>}</b>
+
+            <font color='#0000FF'>return</font> der;
+        <b>}</b>
+
+        <font color='#0000FF'>template</font> <font color='#5555FF'>&lt;</font><font color='#0000FF'>typename</font> T, <font color='#0000FF'>typename</font> U<font color='#5555FF'>&gt;</font>
+        <font color='#0000FF'>typename</font> U::matrix_type <b><a name='operator'></a>operator</b><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font><font face='Lucida Console'>(</font><font color='#0000FF'>const</font> T<font color='#5555FF'>&amp;</font> item, <font color='#0000FF'>const</font> U<font color='#5555FF'>&amp;</font> x<font face='Lucida Console'>)</font> <font color='#0000FF'>const</font>
+        <b>{</b>
+            <font color='#009900'>// U must be some sort of dlib matrix 
+</font>            <font color='#BB00BB'>COMPILE_TIME_ASSERT</font><font face='Lucida Console'>(</font>is_matrix<font color='#5555FF'>&lt;</font>U<font color='#5555FF'>&gt;</font>::value<font face='Lucida Console'>)</font>;
+
+            <font color='#0000FF'>typename</font> U::matrix_type <font color='#BB00BB'>der</font><font face='Lucida Console'>(</font>x.<font color='#BB00BB'>size</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font><font face='Lucida Console'>)</font>;
+            <font color='#0000FF'>typename</font> U::matrix_type <font color='#BB00BB'>e</font><font face='Lucida Console'>(</font>x<font face='Lucida Console'>)</font>;
+            <font color='#0000FF'>for</font> <font face='Lucida Console'>(</font><font color='#0000FF'><u>long</u></font> i <font color='#5555FF'>=</font> <font color='#979000'>0</font>; i <font color='#5555FF'>&lt;</font> x.<font color='#BB00BB'>size</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>; <font color='#5555FF'>+</font><font color='#5555FF'>+</font>i<font face='Lucida Console'>)</font>
+            <b>{</b>
+                <font color='#0000FF'>const</font> <font color='#0000FF'><u>double</u></font> old_val <font color='#5555FF'>=</font> <font color='#BB00BB'>e</font><font face='Lucida Console'>(</font>i<font face='Lucida Console'>)</font>;
+
+                <font color='#BB00BB'>e</font><font face='Lucida Console'>(</font>i<font face='Lucida Console'>)</font> <font color='#5555FF'>+</font><font color='#5555FF'>=</font> eps;
+                <font color='#0000FF'>const</font> <font color='#0000FF'><u>double</u></font> delta_plus <font color='#5555FF'>=</font> <font color='#BB00BB'>f</font><font face='Lucida Console'>(</font>item,e<font face='Lucida Console'>)</font>;
+                <font color='#BB00BB'>e</font><font face='Lucida Console'>(</font>i<font face='Lucida Console'>)</font> <font color='#5555FF'>=</font> old_val <font color='#5555FF'>-</font> eps;
+                <font color='#0000FF'>const</font> <font color='#0000FF'><u>double</u></font> delta_minus <font color='#5555FF'>=</font> <font color='#BB00BB'>f</font><font face='Lucida Console'>(</font>item,e<font face='Lucida Console'>)</font>;
+
+                <font color='#BB00BB'>der</font><font face='Lucida Console'>(</font>i<font face='Lucida Console'>)</font> <font color='#5555FF'>=</font> <font face='Lucida Console'>(</font>delta_plus <font color='#5555FF'>-</font> delta_minus<font face='Lucida Console'>)</font><font color='#5555FF'>/</font><font face='Lucida Console'>(</font><font color='#979000'>2</font><font color='#5555FF'>*</font>eps<font face='Lucida Console'>)</font>;
+
+                <font color='#009900'>// and finally restore the old value of this element
+</font>                <font color='#BB00BB'>e</font><font face='Lucida Console'>(</font>i<font face='Lucida Console'>)</font> <font color='#5555FF'>=</font> old_val;
+            <b>}</b>
+
+            <font color='#0000FF'>return</font> der;
+        <b>}</b>
+        
+
+        <font color='#0000FF'><u>double</u></font> <b><a name='operator'></a>operator</b><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font><font face='Lucida Console'>(</font><font color='#0000FF'>const</font> <font color='#0000FF'><u>double</u></font><font color='#5555FF'>&amp;</font> x<font face='Lucida Console'>)</font> <font color='#0000FF'>const</font>
+        <b>{</b>
+            <font color='#0000FF'>return</font> <font face='Lucida Console'>(</font><font color='#BB00BB'>f</font><font face='Lucida Console'>(</font>x<font color='#5555FF'>+</font>eps<font face='Lucida Console'>)</font><font color='#5555FF'>-</font><font color='#BB00BB'>f</font><font face='Lucida Console'>(</font>x<font color='#5555FF'>-</font>eps<font face='Lucida Console'>)</font><font face='Lucida Console'>)</font><font color='#5555FF'>/</font><font face='Lucida Console'>(</font><font color='#979000'>2</font><font color='#5555FF'>*</font>eps<font face='Lucida Console'>)</font>;
+        <b>}</b>
+
+    <font color='#0000FF'>private</font>:
+        <font color='#0000FF'>const</font> funct<font color='#5555FF'>&amp;</font> f;
+        <font color='#0000FF'>const</font> <font color='#0000FF'><u>double</u></font> eps;
+    <b>}</b>;
+
+    <font color='#0000FF'>template</font> <font color='#5555FF'>&lt;</font><font color='#0000FF'>typename</font> funct<font color='#5555FF'>&gt;</font>
+    <font color='#0000FF'>const</font> central_differences<font color='#5555FF'>&lt;</font>funct<font color='#5555FF'>&gt;</font> <b><a name='derivative'></a>derivative</b><font face='Lucida Console'>(</font><font color='#0000FF'>const</font> funct<font color='#5555FF'>&amp;</font> f<font face='Lucida Console'>)</font> <b>{</b> <font color='#0000FF'>return</font> central_differences<font color='#5555FF'>&lt;</font>funct<font color='#5555FF'>&gt;</font><font face='Lucida Console'>(</font>f<font face='Lucida Console'>)</font>; <b>}</b>
+    <font color='#0000FF'>template</font> <font color='#5555FF'>&lt;</font><font color='#0000FF'>typename</font> funct<font color='#5555FF'>&gt;</font>
+    <font color='#0000FF'>const</font> central_differences<font color='#5555FF'>&lt;</font>funct<font color='#5555FF'>&gt;</font> <b><a name='derivative'></a>derivative</b><font face='Lucida Console'>(</font><font color='#0000FF'>const</font> funct<font color='#5555FF'>&amp;</font> f, <font color='#0000FF'><u>double</u></font> eps<font face='Lucida Console'>)</font> 
+    <b>{</b> 
+        <font color='#009900'>// You get an error on this line when you pass in a global function to this function.
+</font>        <font color='#009900'>// You have to either use a function object or pass a pointer to your global function
+</font>        <font color='#009900'>// by taking its address using the &amp; operator.  (This check is here because gcc 4.0
+</font>        <font color='#009900'>// has a bug that causes it to silently corrupt return values from functions that
+</font>        <font color='#009900'>// invoked through a reference)
+</font>        <font color='#BB00BB'>COMPILE_TIME_ASSERT</font><font face='Lucida Console'>(</font>is_function<font color='#5555FF'>&lt;</font>funct<font color='#5555FF'>&gt;</font>::value <font color='#5555FF'>=</font><font color='#5555FF'>=</font> <font color='#979000'>false</font><font face='Lucida Console'>)</font>;
+
+        <font color='#BB00BB'>DLIB_ASSERT</font> <font face='Lucida Console'>(</font>
+            eps <font color='#5555FF'>&gt;</font> <font color='#979000'>0</font>,
+            "<font color='#CC0000'>\tcentral_differences derivative(f,eps)</font>"
+            <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> "<font color='#CC0000'>\n\tYou must give an epsilon &gt; 0</font>"
+            <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> "<font color='#CC0000'>\n\teps:     </font>" <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> eps 
+        <font face='Lucida Console'>)</font>;
+        <font color='#0000FF'>return</font> central_differences<font color='#5555FF'>&lt;</font>funct<font color='#5555FF'>&gt;</font><font face='Lucida Console'>(</font>f,eps<font face='Lucida Console'>)</font>; 
+    <b>}</b>
+
+<font color='#009900'>// ----------------------------------------------------------------------------------------
+</font>
+    <font color='#0000FF'>template</font> <font color='#5555FF'>&lt;</font><font color='#0000FF'>typename</font> funct<font color='#5555FF'>&gt;</font>
+    <font color='#0000FF'>class</font> <b><a name='negate_function_object'></a>negate_function_object</b> 
+    <b>{</b>
+    <font color='#0000FF'>public</font>:
+        <font color='#009900'>// You get an error on this line when you pass in a global function to this function.
+</font>        <font color='#009900'>// You have to either use a function object or pass a pointer to your global function
+</font>        <font color='#009900'>// by taking its address using the &amp; operator.  (This check is here because gcc 4.0
+</font>        <font color='#009900'>// has a bug that causes it to silently corrupt return values from functions that
+</font>        <font color='#009900'>// invoked through a reference)
+</font>        <b><a name='COMPILE_TIME_ASSERT'></a>COMPILE_TIME_ASSERT</b><font face='Lucida Console'>(</font>is_function<font color='#5555FF'>&lt;</font>funct<font color='#5555FF'>&gt;</font>::value <font color='#5555FF'>=</font><font color='#5555FF'>=</font> <font color='#979000'>false</font><font face='Lucida Console'>)</font>;
+
+        <b><a name='negate_function_object'></a>negate_function_object</b><font face='Lucida Console'>(</font><font color='#0000FF'>const</font> funct<font color='#5555FF'>&amp;</font> f_<font face='Lucida Console'>)</font> : f<font face='Lucida Console'>(</font>f_<font face='Lucida Console'>)</font><b>{</b><b>}</b>
+
+        <font color='#0000FF'>template</font> <font color='#5555FF'>&lt;</font><font color='#0000FF'>typename</font> T<font color='#5555FF'>&gt;</font>
+        <font color='#0000FF'><u>double</u></font> <b><a name='operator'></a>operator</b><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font><font face='Lucida Console'>(</font><font color='#0000FF'>const</font> T<font color='#5555FF'>&amp;</font> x<font face='Lucida Console'>)</font> <font color='#0000FF'>const</font>
+        <b>{</b>
+            <font color='#0000FF'>return</font> <font color='#5555FF'>-</font><font color='#BB00BB'>f</font><font face='Lucida Console'>(</font>x<font face='Lucida Console'>)</font>;
+        <b>}</b>
+
+    <font color='#0000FF'>private</font>:
+        <font color='#0000FF'>const</font> funct<font color='#5555FF'>&amp;</font> f;
+    <b>}</b>;
+
+    <font color='#0000FF'>template</font> <font color='#5555FF'>&lt;</font><font color='#0000FF'>typename</font> funct<font color='#5555FF'>&gt;</font>
+    <font color='#0000FF'>const</font> negate_function_object<font color='#5555FF'>&lt;</font>funct<font color='#5555FF'>&gt;</font> <b><a name='negate_function'></a>negate_function</b><font face='Lucida Console'>(</font><font color='#0000FF'>const</font> funct<font color='#5555FF'>&amp;</font> f<font face='Lucida Console'>)</font> <b>{</b> <font color='#0000FF'>return</font> negate_function_object<font color='#5555FF'>&lt;</font>funct<font color='#5555FF'>&gt;</font><font face='Lucida Console'>(</font>f<font face='Lucida Console'>)</font>; <b>}</b>
+
+<font color='#009900'>// ----------------------------------------------------------------------------------------
+</font><font color='#009900'>// ----------------------------------------------------------------------------------------
+</font><font color='#009900'>//                    Functions that perform unconstrained optimization 
+</font><font color='#009900'>// ----------------------------------------------------------------------------------------
+</font><font color='#009900'>// ----------------------------------------------------------------------------------------
+</font>
+    <font color='#0000FF'>template</font> <font color='#5555FF'>&lt;</font>
+        <font color='#0000FF'>typename</font> search_strategy_type,
+        <font color='#0000FF'>typename</font> stop_strategy_type,
+        <font color='#0000FF'>typename</font> funct, 
+        <font color='#0000FF'>typename</font> funct_der, 
+        <font color='#0000FF'>typename</font> T
+        <font color='#5555FF'>&gt;</font>
+    <font color='#0000FF'><u>double</u></font> <b><a name='find_min'></a>find_min</b> <font face='Lucida Console'>(</font>
+        search_strategy_type search_strategy,
+        stop_strategy_type stop_strategy,
+        <font color='#0000FF'>const</font> funct<font color='#5555FF'>&amp;</font> f, 
+        <font color='#0000FF'>const</font> funct_der<font color='#5555FF'>&amp;</font> der, 
+        T<font color='#5555FF'>&amp;</font> x, 
+        <font color='#0000FF'><u>double</u></font> min_f
+    <font face='Lucida Console'>)</font>
+    <b>{</b>
+        <font color='#009900'>// You get an error on this line when you pass in a global function to this function.
+</font>        <font color='#009900'>// You have to either use a function object or pass a pointer to your global function
+</font>        <font color='#009900'>// by taking its address using the &amp; operator.  (This check is here because gcc 4.0
+</font>        <font color='#009900'>// has a bug that causes it to silently corrupt return values from functions that
+</font>        <font color='#009900'>// invoked through a reference)
+</font>        <font color='#BB00BB'>COMPILE_TIME_ASSERT</font><font face='Lucida Console'>(</font>is_function<font color='#5555FF'>&lt;</font>funct<font color='#5555FF'>&gt;</font>::value <font color='#5555FF'>=</font><font color='#5555FF'>=</font> <font color='#979000'>false</font><font face='Lucida Console'>)</font>;
+        <font color='#BB00BB'>COMPILE_TIME_ASSERT</font><font face='Lucida Console'>(</font>is_function<font color='#5555FF'>&lt;</font>funct_der<font color='#5555FF'>&gt;</font>::value <font color='#5555FF'>=</font><font color='#5555FF'>=</font> <font color='#979000'>false</font><font face='Lucida Console'>)</font>;
+
+        <font color='#BB00BB'>COMPILE_TIME_ASSERT</font><font face='Lucida Console'>(</font>is_matrix<font color='#5555FF'>&lt;</font>T<font color='#5555FF'>&gt;</font>::value<font face='Lucida Console'>)</font>;
+        <font color='#BB00BB'>DLIB_ASSERT</font> <font face='Lucida Console'>(</font>
+            <font color='#BB00BB'>is_col_vector</font><font face='Lucida Console'>(</font>x<font face='Lucida Console'>)</font>,
+            "<font color='#CC0000'>\tdouble find_min()</font>"
+            <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> "<font color='#CC0000'>\n\tYou have to supply column vectors to this function</font>"
+            <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> "<font color='#CC0000'>\n\tx.nc():    </font>" <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> x.<font color='#BB00BB'>nc</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>
+        <font face='Lucida Console'>)</font>;
+
+
+        T g, s;
+
+        <font color='#0000FF'><u>double</u></font> f_value <font color='#5555FF'>=</font> <font color='#BB00BB'>f</font><font face='Lucida Console'>(</font>x<font face='Lucida Console'>)</font>;
+        g <font color='#5555FF'>=</font> <font color='#BB00BB'>der</font><font face='Lucida Console'>(</font>x<font face='Lucida Console'>)</font>;
+
+        <font color='#0000FF'>while</font><font face='Lucida Console'>(</font>stop_strategy.<font color='#BB00BB'>should_continue_search</font><font face='Lucida Console'>(</font>x, f_value, g<font face='Lucida Console'>)</font> <font color='#5555FF'>&amp;</font><font color='#5555FF'>&amp;</font> f_value <font color='#5555FF'>&gt;</font> min_f<font face='Lucida Console'>)</font>
+        <b>{</b>
+            s <font color='#5555FF'>=</font> search_strategy.<font color='#BB00BB'>get_next_direction</font><font face='Lucida Console'>(</font>x, f_value, g<font face='Lucida Console'>)</font>;
+
+            <font color='#0000FF'><u>double</u></font> alpha <font color='#5555FF'>=</font> <font color='#BB00BB'>line_search</font><font face='Lucida Console'>(</font>
+                        <font color='#BB00BB'>make_line_search_function</font><font face='Lucida Console'>(</font>f,x,s, f_value<font face='Lucida Console'>)</font>,
+                        f_value,
+                        <font color='#BB00BB'>make_line_search_function</font><font face='Lucida Console'>(</font>der,x,s, g<font face='Lucida Console'>)</font>,
+                        <font color='#BB00BB'>dot</font><font face='Lucida Console'>(</font>g,s<font face='Lucida Console'>)</font>, <font color='#009900'>// compute initial gradient for the line search
+</font>                        search_strategy.<font color='#BB00BB'>get_wolfe_rho</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>, search_strategy.<font color='#BB00BB'>get_wolfe_sigma</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>, min_f,
+                        search_strategy.<font color='#BB00BB'>get_max_line_search_iterations</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font><font face='Lucida Console'>)</font>;
+
+            <font color='#009900'>// Take the search step indicated by the above line search
+</font>            x <font color='#5555FF'>+</font><font color='#5555FF'>=</font> alpha<font color='#5555FF'>*</font>s;
+        <b>}</b>
+
+        <font color='#0000FF'>return</font> f_value;
+    <b>}</b>
+
+<font color='#009900'>// ----------------------------------------------------------------------------------------
+</font>
+    <font color='#0000FF'>template</font> <font color='#5555FF'>&lt;</font>
+        <font color='#0000FF'>typename</font> search_strategy_type,
+        <font color='#0000FF'>typename</font> stop_strategy_type,
+        <font color='#0000FF'>typename</font> funct, 
+        <font color='#0000FF'>typename</font> funct_der, 
+        <font color='#0000FF'>typename</font> T
+        <font color='#5555FF'>&gt;</font>
+    <font color='#0000FF'><u>double</u></font> <b><a name='find_max'></a>find_max</b> <font face='Lucida Console'>(</font>
+        search_strategy_type search_strategy,
+        stop_strategy_type stop_strategy,
+        <font color='#0000FF'>const</font> funct<font color='#5555FF'>&amp;</font> f, 
+        <font color='#0000FF'>const</font> funct_der<font color='#5555FF'>&amp;</font> der, 
+        T<font color='#5555FF'>&amp;</font> x, 
+        <font color='#0000FF'><u>double</u></font> max_f
+    <font face='Lucida Console'>)</font>
+    <b>{</b>
+        <font color='#009900'>// You get an error on this line when you pass in a global function to this function.
+</font>        <font color='#009900'>// You have to either use a function object or pass a pointer to your global function
+</font>        <font color='#009900'>// by taking its address using the &amp; operator.  (This check is here because gcc 4.0
+</font>        <font color='#009900'>// has a bug that causes it to silently corrupt return values from functions that
+</font>        <font color='#009900'>// invoked through a reference)
+</font>        <font color='#BB00BB'>COMPILE_TIME_ASSERT</font><font face='Lucida Console'>(</font>is_function<font color='#5555FF'>&lt;</font>funct<font color='#5555FF'>&gt;</font>::value <font color='#5555FF'>=</font><font color='#5555FF'>=</font> <font color='#979000'>false</font><font face='Lucida Console'>)</font>;
+        <font color='#BB00BB'>COMPILE_TIME_ASSERT</font><font face='Lucida Console'>(</font>is_function<font color='#5555FF'>&lt;</font>funct_der<font color='#5555FF'>&gt;</font>::value <font color='#5555FF'>=</font><font color='#5555FF'>=</font> <font color='#979000'>false</font><font face='Lucida Console'>)</font>;
+
+        <font color='#BB00BB'>COMPILE_TIME_ASSERT</font><font face='Lucida Console'>(</font>is_matrix<font color='#5555FF'>&lt;</font>T<font color='#5555FF'>&gt;</font>::value<font face='Lucida Console'>)</font>;
+        <font color='#BB00BB'>DLIB_ASSERT</font> <font face='Lucida Console'>(</font>
+            <font color='#BB00BB'>is_col_vector</font><font face='Lucida Console'>(</font>x<font face='Lucida Console'>)</font>,
+            "<font color='#CC0000'>\tdouble find_max()</font>"
+            <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> "<font color='#CC0000'>\n\tYou have to supply column vectors to this function</font>"
+            <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> "<font color='#CC0000'>\n\tx.nc():    </font>" <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> x.<font color='#BB00BB'>nc</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>
+        <font face='Lucida Console'>)</font>;
+
+        T g, s;
+
+        <font color='#009900'>// This function is basically just a copy of find_min() but with - put in the right places
+</font>        <font color='#009900'>// to flip things around so that it ends up looking for the max rather than the min.
+</font>
+        <font color='#0000FF'><u>double</u></font> f_value <font color='#5555FF'>=</font> <font color='#5555FF'>-</font><font color='#BB00BB'>f</font><font face='Lucida Console'>(</font>x<font face='Lucida Console'>)</font>;
+        g <font color='#5555FF'>=</font> <font color='#5555FF'>-</font><font color='#BB00BB'>der</font><font face='Lucida Console'>(</font>x<font face='Lucida Console'>)</font>;
+
+        <font color='#0000FF'>while</font><font face='Lucida Console'>(</font>stop_strategy.<font color='#BB00BB'>should_continue_search</font><font face='Lucida Console'>(</font>x, f_value, g<font face='Lucida Console'>)</font> <font color='#5555FF'>&amp;</font><font color='#5555FF'>&amp;</font> f_value <font color='#5555FF'>&gt;</font> <font color='#5555FF'>-</font>max_f<font face='Lucida Console'>)</font>
+        <b>{</b>
+            s <font color='#5555FF'>=</font> search_strategy.<font color='#BB00BB'>get_next_direction</font><font face='Lucida Console'>(</font>x, f_value, g<font face='Lucida Console'>)</font>;
+
+            <font color='#0000FF'><u>double</u></font> alpha <font color='#5555FF'>=</font> <font color='#BB00BB'>line_search</font><font face='Lucida Console'>(</font>
+                        <font color='#BB00BB'>negate_function</font><font face='Lucida Console'>(</font><font color='#BB00BB'>make_line_search_function</font><font face='Lucida Console'>(</font>f,x,s, f_value<font face='Lucida Console'>)</font><font face='Lucida Console'>)</font>,
+                        f_value,
+                        <font color='#BB00BB'>negate_function</font><font face='Lucida Console'>(</font><font color='#BB00BB'>make_line_search_function</font><font face='Lucida Console'>(</font>der,x,s, g<font face='Lucida Console'>)</font><font face='Lucida Console'>)</font>,
+                        <font color='#BB00BB'>dot</font><font face='Lucida Console'>(</font>g,s<font face='Lucida Console'>)</font>, <font color='#009900'>// compute initial gradient for the line search
+</font>                        search_strategy.<font color='#BB00BB'>get_wolfe_rho</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>, search_strategy.<font color='#BB00BB'>get_wolfe_sigma</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>, <font color='#5555FF'>-</font>max_f,
+                        search_strategy.<font color='#BB00BB'>get_max_line_search_iterations</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>
+                        <font face='Lucida Console'>)</font>;
+
+            <font color='#009900'>// Take the search step indicated by the above line search
+</font>            x <font color='#5555FF'>+</font><font color='#5555FF'>=</font> alpha<font color='#5555FF'>*</font>s;
+
+            <font color='#009900'>// Don't forget to negate these outputs from the line search since they are 
+</font>            <font color='#009900'>// from the unnegated versions of f() and der()
+</font>            g <font color='#5555FF'>*</font><font color='#5555FF'>=</font> <font color='#5555FF'>-</font><font color='#979000'>1</font>;
+            f_value <font color='#5555FF'>*</font><font color='#5555FF'>=</font> <font color='#5555FF'>-</font><font color='#979000'>1</font>;
+        <b>}</b>
+
+        <font color='#0000FF'>return</font> <font color='#5555FF'>-</font>f_value;
+    <b>}</b>
+
+<font color='#009900'>// ----------------------------------------------------------------------------------------
+</font>
+    <font color='#0000FF'>template</font> <font color='#5555FF'>&lt;</font>
+        <font color='#0000FF'>typename</font> search_strategy_type,
+        <font color='#0000FF'>typename</font> stop_strategy_type,
+        <font color='#0000FF'>typename</font> funct,
+        <font color='#0000FF'>typename</font> T
+        <font color='#5555FF'>&gt;</font>
+    <font color='#0000FF'><u>double</u></font> <b><a name='find_min_using_approximate_derivatives'></a>find_min_using_approximate_derivatives</b> <font face='Lucida Console'>(</font>
+        search_strategy_type search_strategy,
+        stop_strategy_type stop_strategy,
+        <font color='#0000FF'>const</font> funct<font color='#5555FF'>&amp;</font> f,
+        T<font color='#5555FF'>&amp;</font> x,
+        <font color='#0000FF'><u>double</u></font> min_f,
+        <font color='#0000FF'><u>double</u></font> derivative_eps <font color='#5555FF'>=</font> <font color='#979000'>1e</font><font color='#5555FF'>-</font><font color='#979000'>7</font>
+    <font face='Lucida Console'>)</font>
+    <b>{</b>
+        <font color='#009900'>// You get an error on this line when you pass in a global function to this function.
+</font>        <font color='#009900'>// You have to either use a function object or pass a pointer to your global function
+</font>        <font color='#009900'>// by taking its address using the &amp; operator.  (This check is here because gcc 4.0
+</font>        <font color='#009900'>// has a bug that causes it to silently corrupt return values from functions that
+</font>        <font color='#009900'>// invoked through a reference)
+</font>        <font color='#BB00BB'>COMPILE_TIME_ASSERT</font><font face='Lucida Console'>(</font>is_function<font color='#5555FF'>&lt;</font>funct<font color='#5555FF'>&gt;</font>::value <font color='#5555FF'>=</font><font color='#5555FF'>=</font> <font color='#979000'>false</font><font face='Lucida Console'>)</font>;
+
+        <font color='#BB00BB'>COMPILE_TIME_ASSERT</font><font face='Lucida Console'>(</font>is_matrix<font color='#5555FF'>&lt;</font>T<font color='#5555FF'>&gt;</font>::value<font face='Lucida Console'>)</font>;
+        <font color='#BB00BB'>DLIB_ASSERT</font> <font face='Lucida Console'>(</font>
+            <font color='#BB00BB'>is_col_vector</font><font face='Lucida Console'>(</font>x<font face='Lucida Console'>)</font> <font color='#5555FF'>&amp;</font><font color='#5555FF'>&amp;</font> derivative_eps <font color='#5555FF'>&gt;</font> <font color='#979000'>0</font>,
+            "<font color='#CC0000'>\tdouble find_min_using_approximate_derivatives()</font>"
+            <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> "<font color='#CC0000'>\n\tYou have to supply column vectors to this function</font>"
+            <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> "<font color='#CC0000'>\n\tx.nc():         </font>" <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> x.<font color='#BB00BB'>nc</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>
+            <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> "<font color='#CC0000'>\n\tderivative_eps: </font>" <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> derivative_eps 
+        <font face='Lucida Console'>)</font>;
+
+        T g, s;
+
+        <font color='#0000FF'><u>double</u></font> f_value <font color='#5555FF'>=</font> <font color='#BB00BB'>f</font><font face='Lucida Console'>(</font>x<font face='Lucida Console'>)</font>;
+        g <font color='#5555FF'>=</font> <font color='#BB00BB'>derivative</font><font face='Lucida Console'>(</font>f,derivative_eps<font face='Lucida Console'>)</font><font face='Lucida Console'>(</font>x<font face='Lucida Console'>)</font>;
+
+        <font color='#0000FF'>while</font><font face='Lucida Console'>(</font>stop_strategy.<font color='#BB00BB'>should_continue_search</font><font face='Lucida Console'>(</font>x, f_value, g<font face='Lucida Console'>)</font> <font color='#5555FF'>&amp;</font><font color='#5555FF'>&amp;</font> f_value <font color='#5555FF'>&gt;</font> min_f<font face='Lucida Console'>)</font>
+        <b>{</b>
+            s <font color='#5555FF'>=</font> search_strategy.<font color='#BB00BB'>get_next_direction</font><font face='Lucida Console'>(</font>x, f_value, g<font face='Lucida Console'>)</font>;
+
+            <font color='#0000FF'><u>double</u></font> alpha <font color='#5555FF'>=</font> <font color='#BB00BB'>line_search</font><font face='Lucida Console'>(</font>
+                        <font color='#BB00BB'>make_line_search_function</font><font face='Lucida Console'>(</font>f,x,s,f_value<font face='Lucida Console'>)</font>,
+                        f_value,
+                        <font color='#BB00BB'>derivative</font><font face='Lucida Console'>(</font><font color='#BB00BB'>make_line_search_function</font><font face='Lucida Console'>(</font>f,x,s<font face='Lucida Console'>)</font>,derivative_eps<font face='Lucida Console'>)</font>,
+                        <font color='#BB00BB'>dot</font><font face='Lucida Console'>(</font>g,s<font face='Lucida Console'>)</font>,  <font color='#009900'>// Sometimes the following line is a better way of determining the initial gradient. 
+</font>                        <font color='#009900'>//derivative(make_line_search_function(f,x,s),derivative_eps)(0),
+</font>                        search_strategy.<font color='#BB00BB'>get_wolfe_rho</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>, search_strategy.<font color='#BB00BB'>get_wolfe_sigma</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>, min_f,
+                        search_strategy.<font color='#BB00BB'>get_max_line_search_iterations</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>
+                        <font face='Lucida Console'>)</font>;
+
+            <font color='#009900'>// Take the search step indicated by the above line search
+</font>            x <font color='#5555FF'>+</font><font color='#5555FF'>=</font> alpha<font color='#5555FF'>*</font>s;
+
+            g <font color='#5555FF'>=</font> <font color='#BB00BB'>derivative</font><font face='Lucida Console'>(</font>f,derivative_eps<font face='Lucida Console'>)</font><font face='Lucida Console'>(</font>x<font face='Lucida Console'>)</font>;
+        <b>}</b>
+
+        <font color='#0000FF'>return</font> f_value;
+    <b>}</b>
+
+<font color='#009900'>// ----------------------------------------------------------------------------------------
+</font>
+    <font color='#0000FF'>template</font> <font color='#5555FF'>&lt;</font>
+        <font color='#0000FF'>typename</font> search_strategy_type,
+        <font color='#0000FF'>typename</font> stop_strategy_type,
+        <font color='#0000FF'>typename</font> funct,
+        <font color='#0000FF'>typename</font> T
+        <font color='#5555FF'>&gt;</font>
+    <font color='#0000FF'><u>double</u></font> <b><a name='find_max_using_approximate_derivatives'></a>find_max_using_approximate_derivatives</b> <font face='Lucida Console'>(</font>
+        search_strategy_type search_strategy,
+        stop_strategy_type stop_strategy,
+        <font color='#0000FF'>const</font> funct<font color='#5555FF'>&amp;</font> f,
+        T<font color='#5555FF'>&amp;</font> x,
+        <font color='#0000FF'><u>double</u></font> max_f,
+        <font color='#0000FF'><u>double</u></font> derivative_eps <font color='#5555FF'>=</font> <font color='#979000'>1e</font><font color='#5555FF'>-</font><font color='#979000'>7</font>
+    <font face='Lucida Console'>)</font>
+    <b>{</b>
+        <font color='#009900'>// You get an error on this line when you pass in a global function to this function.
+</font>        <font color='#009900'>// You have to either use a function object or pass a pointer to your global function
+</font>        <font color='#009900'>// by taking its address using the &amp; operator.  (This check is here because gcc 4.0
+</font>        <font color='#009900'>// has a bug that causes it to silently corrupt return values from functions that
+</font>        <font color='#009900'>// invoked through a reference)
+</font>        <font color='#BB00BB'>COMPILE_TIME_ASSERT</font><font face='Lucida Console'>(</font>is_function<font color='#5555FF'>&lt;</font>funct<font color='#5555FF'>&gt;</font>::value <font color='#5555FF'>=</font><font color='#5555FF'>=</font> <font color='#979000'>false</font><font face='Lucida Console'>)</font>;
+
+        <font color='#BB00BB'>COMPILE_TIME_ASSERT</font><font face='Lucida Console'>(</font>is_matrix<font color='#5555FF'>&lt;</font>T<font color='#5555FF'>&gt;</font>::value<font face='Lucida Console'>)</font>;
+        <font color='#BB00BB'>DLIB_ASSERT</font> <font face='Lucida Console'>(</font>
+            <font color='#BB00BB'>is_col_vector</font><font face='Lucida Console'>(</font>x<font face='Lucida Console'>)</font> <font color='#5555FF'>&amp;</font><font color='#5555FF'>&amp;</font> derivative_eps <font color='#5555FF'>&gt;</font> <font color='#979000'>0</font>,
+            "<font color='#CC0000'>\tdouble find_max_using_approximate_derivatives()</font>"
+            <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> "<font color='#CC0000'>\n\tYou have to supply column vectors to this function</font>"
+            <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> "<font color='#CC0000'>\n\tx.nc():         </font>" <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> x.<font color='#BB00BB'>nc</font><font face='Lucida Console'>(</font><font face='Lucida Console'>)</font>
+            <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> "<font color='#CC0000'>\n\tderivative_eps: </font>" <font color='#5555FF'>&lt;</font><font color='#5555FF'>&lt;</font> derivative_eps 
+        <font face='Lucida Console'>)</font>;
+
+        <font color='#009900'>// Just negate the necessary things and call the find_min version of this function.
+</font>        <font color='#0000FF'>return</font> <font color='#5555FF'>-</font><font color='#BB00BB'>find_min_using_approximate_derivatives</font><font face='Lucida Console'>(</font>
+            search_strategy, 
+            stop_strategy, 
+            <font color='#BB00BB'>negate_function</font><font face='Lucida Console'>(</font>f<font face='Lucida Console'>)</font>,
+            x,
+            <font color='#5555FF'>-</font>max_f,
+            derivative_eps
+        <font face='Lucida Console'>)</font>;
+    <b>}</b>
+
+<font color='#009900'>// ----------------------------------------------------------------------------------------
+</font>
+<b>}</b>
+
+<font color='#0000FF'>#endif</font> <font color='#009900'>// DLIB_OPTIMIZATIOn_H_
+</font>
+
+</pre></body></html>

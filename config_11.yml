@@ -1,0 +1,21 @@
+%YAML:1.0
+input_directory: ../test_icdar_2011/
+responses_directory: ../result_test/
+crf_model_file: models/model_crf_rf.dat
+svm_model_file: models/model_svm_cc.yml
+cnn_model_file: models/dumpnet_bin/
+random_forest_model_file: models/model_forest_cc.yml
+random_forest_pw_1_1_model_file: models/model_forest_cc_pw_1_1.yml
+random_forest_pw_1_0_model_file: models/model_forest_cc_pw_1_0.yml
+random_forest_pw_0_0_model_file: models/model_forest_cc_pw_0_0.yml
+random_seed: 4
+threshold: 0.10
+word_group_threshold: 0.60
+word_split_model: "MODEL_PROJECTION_PROFILE_SOFT"
+classification_model: "CLASSIFICATION_MODEL_CRF_RF"
+pre_classification_model: "PRE_CLASSIFICATION_MODEL_RF_SVM_ENSEMBLE"
+pre_classification_prob_threshold: 0.00
+minimum_vertical_overlap: 0.4
+maximum_height_ratio: 2.0
+allow_single_letters: 1
+verbose: 1

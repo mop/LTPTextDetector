@@ -1,0 +1,50 @@
+<html><!-- Created using the cpp_pretty_printer from the dlib C++ library.  See http://dlib.net for updates. --><head><title>dlib C++ Library - create_random_projection_hash_abstract.h</title></head><body bgcolor='white'><pre>
+<font color='#009900'>// Copyright (C) 2011  Davis E. King (davis@dlib.net)
+</font><font color='#009900'>// License: Boost Software License   See LICENSE.txt for the full license.
+</font><font color='#0000FF'>#undef</font> DLIB_CREATE_RANDOM_PROJECTION_HAsH_ABSTRACT_H__
+<font color='#0000FF'>#ifdef</font> DLIB_CREATE_RANDOM_PROJECTION_HAsH_ABSTRACT_H__
+
+<font color='#0000FF'>#include</font> "<a style='text-decoration:none' href='projection_hash_abstract.h.html'>projection_hash_abstract.h</a>"
+<font color='#0000FF'>#include</font> "<a style='text-decoration:none' href='../rand.h.html'>../rand.h</a>"
+
+<font color='#0000FF'>namespace</font> dlib
+<b>{</b>
+
+<font color='#009900'>// ----------------------------------------------------------------------------------------
+</font>
+    <font color='#0000FF'>template</font> <font color='#5555FF'>&lt;</font>
+        <font color='#0000FF'>typename</font> vector_type
+        <font color='#5555FF'>&gt;</font>
+    projection_hash <b><a name='create_random_projection_hash'></a>create_random_projection_hash</b> <font face='Lucida Console'>(</font>
+        <font color='#0000FF'>const</font> vector_type<font color='#5555FF'>&amp;</font> v,
+        <font color='#0000FF'>const</font> <font color='#0000FF'><u>int</u></font> bits
+    <font face='Lucida Console'>)</font>;
+    <font color='#009900'>/*!
+        requires
+            - 0 &lt; bits &lt;= 32
+            - v.size() &gt; 1
+            - vector_type == a std::vector or compatible type containing dlib::matrix 
+              objects, each representing a column vector of the same size.
+            - for all valid i, j:
+                - is_col_vector(v[i]) == true 
+                - v[i].size() &gt; 0
+                - v[i].size() == v[j].size() 
+                - i.e. v contains only column vectors and all the column vectors
+                  have the same non-zero length
+        ensures
+            - returns a hash function H such that:
+                - H.num_hash_bins() == pow(2,bits)
+                - H will be setup so that it hashes the contents of v such that
+                  each bin ends up with roughly the same number of elements
+                  in it.
+    !*/</font>
+
+<font color='#009900'>// ----------------------------------------------------------------------------------------
+</font>
+<b>}</b>
+
+<font color='#0000FF'>#endif</font> <font color='#009900'>// DLIB_CREATE_RANDOM_PROJECTION_HAsH_ABSTRACT_H__
+</font>
+
+
+</pre></body></html>

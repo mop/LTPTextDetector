@@ -1,0 +1,558 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="shortcut icon" href="dlib-icon.ico"><meta name="verify-v1" content="02MiiaFNVzS5/u0eQhsy3/knioFHsia1X3DXRpHkE6I="><meta name="google-site-verification" content="DGSSJMKDomaDaDTIRJ8jDkv0YMx9Cz7OESbXHjjr6Jw"><title>dlib C++ Library
+   - Change Log</title><script language="JavaScript">
+
+// ---------------------------------------------
+// --- Name:    Easy DHTML Treeview           --
+// --- Author:  D.D. de Kerf                  --
+// --- Version: 0.2          Date: 13-6-2001  --
+// ---------------------------------------------
+function Toggle(node)
+{
+   // Unfold the branch if it isn't visible
+   var next_node = node.nextSibling;
+   if (next_node.style.display == 'none')
+   {
+      // Change the image (if there is an image)
+      if (node.childNodes.length > 0)
+      {
+         if (node.childNodes.length > 0)
+         { 
+            if (node.childNodes.item(0).nodeName == "IMG")
+            {
+               node.childNodes.item(0).src = "minus.gif";
+            }
+         }
+      }
+
+      next_node.style.display = 'block';
+   }
+   // Collapse the branch if it IS visible
+   else
+   {
+      // Change the image (if there is an image)
+      if (node.childNodes.length > 0)
+      {
+         if (node.childNodes.length > 0)
+         { 
+            if (node.childNodes.item(0).nodeName == "IMG")
+            {
+               node.childNodes.item(0).src = "plus.gif";
+            }
+         }
+      }
+
+      next_node.style.display = 'none';
+   }
+
+}
+function BigToggle(node)
+{
+   // Unfold the branch if it isn't visible
+   var next_node = node.nextSibling;
+   if (next_node.style.display == 'none')
+   {
+      // Change the image (if there is an image)
+      if (node.childNodes.length > 0)
+      {
+         if (node.childNodes.length > 0)
+         { 
+            if (node.childNodes.item(0).nodeName == "IMG")
+            {
+               node.childNodes.item(0).src = "bigminus.gif";
+            }
+         }
+      }
+
+      next_node.style.display = 'block';
+   }
+   // Collapse the branch if it IS visible
+   else
+   {
+      // Change the image (if there is an image)
+      if (node.childNodes.length > 0)
+      {
+         if (node.childNodes.length > 0)
+         { 
+            if (node.childNodes.item(0).nodeName == "IMG")
+            {
+               node.childNodes.item(0).src = "bigplus.gif";
+            }
+         }
+      }
+
+      next_node.style.display = 'none';
+   }
+
+}
+</script><style type="text/css">
+   body {margin:0px;}
+   pre {margin:0px;}
+
+   ul.tree  li { list-style: none;  margin-left:10px;} 
+   ul.tree  { margin:0px; padding:0px; margin-left:5px; font-size:0.95em; }
+   ul.tree  li ul { margin-left:10px; padding:0px; }
+
+   div#component {
+      background-color:white; 
+      border: 2px solid rgb(102,102,102); 
+      text-align:left;
+      margin-top: 1.5em;
+      padding: 0.7em;
+   }
+
+   div#question {
+      background-color:white; 
+      border: 2px solid rgb(102,102,102); 
+      text-align:left;
+      margin-top: 1.5em;
+      margin-bottom: 90%;
+      padding: 0.7em;
+   }
+
+   div#function {
+      background-color:white; 
+      border: 2px solid rgb(102,102,255); 
+      text-align:left;
+      margin-top: 0.3em;
+      padding: 0.3em;
+   }
+
+   div#class {
+      background-color:white; 
+      border: 2px solid rgb(255,102,102); 
+      text-align:left;
+      margin-top: 0.3em;
+      padding: 0.3em;
+   }
+
+   div#extension {
+      background-color:#FDFDFD; 
+      border: 1px solid rgb(102,102,102); 
+      text-align:left;
+      margin-top: 1.0em;
+      padding: 0.7em;
+   }
+
+   div#logb {
+      text-align:left;
+      padding: 0.0em;
+      float: left;
+      background-color:#c0c0c0; 
+      border: double ; 
+      margin: 0.5em;
+   }
+
+
+   .code_box
+   {
+      color: black;
+      margin: 1em 0.25in;
+      padding: 0.5em;
+      background: rgb(240,240,240);
+      border-top: black dotted 1px;
+      border-left: black dotted 1px;
+      border-right: black solid 2px;
+      border-bottom: black solid 2px;
+   }
+
+
+
+   .bdotted {border-bottom: 1px dotted}
+   .bdashed {border-bottom: 1px dashed}
+   .bsolid {border-bottom: 1px solid}
+   .bdouble {border-bottom: 1px double}
+   .bgroove {border-bottom: 1px groove}
+   .bridge {border-bottom: 1px ridge}
+   .binset {border-bottom: 1px inset}
+   .boutset {border-bottom: 1px outset}
+
+   div#row1 {
+      background-color:#dfdfdf; 
+   }
+   div#row2 {
+      background-color:#f2f2f2; 
+   }
+
+   div#typedefs {
+      margin-left: 1.5em;
+      margin-top: 0.2em;
+      border: 1px dotted;
+      width: 52em;
+   }
+
+   div#tdn {
+      width: 10em;
+   }
+
+   .fullhr {
+      clear: both;
+   }
+
+   body {
+      text-align: center;
+   }
+
+   div#entire_page {
+      width:62.5em;  
+      text-align: left;
+      margin-top: 0.4em;
+      margin-left: auto;
+      margin-right: auto;
+   }
+</style></head><body bgcolor="#EDF3EE"><a name="top"></a><div id="entire_page"><a href="http://dlib.net"><img src="dlib-logo.png"></a><table bgcolor="white" height="100%" bordercolor="#EDF3EE" CELLSPACING="0" CELLPADDING="10" style="border:0px;margin-top:2px"><tr height="100%"><td BGCOLOR="#F5F5F5" style="padding:7px; border: 1px solid rgb(102,102,102);" VALIGN="TOP" height="100%"><br><table WIDTH="145" height="100%"><tr><td VALIGN="TOP"><b>The Library</b><ul class="tree"><li><a href="algorithms.html">Algorithms</a></li><li><a href="api.html">API Wrappers</a></li><li><a href="bayes.html">Bayesian Nets</a></li><li><a href="compression.html">Compression</a></li><li><a href="containers.html">Containers</a></li><li><a href="graph_tools.html">Graph Tools</a></li><li><a href="imaging.html">Image Processing</a></li><li><a href="linear_algebra.html">Linear Algebra</a></li><li><a href="ml.html">Machine Learning</a></li><li><a href="metaprogramming.html">Metaprogramming</a></li><li><a href="other.html">Miscellaneous</a></li><li><a href="network.html">Networking</a></li><li><a href="optimization.html">Optimization</a></li><li><a href="parsing.html">Parsing</a></li></ul><br><b>Help/Info</b><ul class="tree"><li><a onclick="Toggle(this)" style="cursor: pointer;margin-left:-9px"><img src="plus.gif"><font color="green"><u>Examples</u></font></a><ul style="display:none;"><li><a href="assignment_learning_ex.cpp.html">Assignment_Learning</a></li><li><a href="file_to_code_ex.cpp.html">Base64_Encoder</a></li><li><a href="bayes_net_ex.cpp.html">Bayesian_Network</a></li><li><a href="bayes_net_from_disk_ex.cpp.html">Bayesian_Network_From_Disk</a></li><li><a href="bayes_net_gui_ex.cpp.html">Bayesian_Network_GUI</a></li><li><a href="bridge_ex.cpp.html">Bridge</a></li><li><a href="bsp_ex.cpp.html">BSP</a></li><li><a href="compress_stream_ex.cpp.html#_top">Cmd_Line_Parser</a></li><li><a href="compress_stream_ex.cpp.html">Compress_Stream</a></li><li><a href="config_reader_ex.cpp.html">Config_File_Reader</a></li><li><a href="custom_trainer_ex.cpp.html">Custom_Trainers</a></li><li><a href="dir_nav_ex.cpp.html">Directory_Navigation</a></li><li><a href="empirical_kernel_map_ex.cpp.html">Empirical_Kernel_Map</a></li><li><a href="graph_labeling_ex.cpp.html">Graph_Labeling</a></li><li><a href="gui_api_ex.cpp.html">GUI</a></li><li><a href="server_http_ex.cpp.html">HTTP_Server</a></li><li><a href="image_ex.cpp.html">Image</a></li><li><a href="iosockstream_ex.cpp.html">IO Socket Streams</a></li><li><a href="server_iostream_ex.cpp.html">IO Streams Server</a></li><li><a href="kcentroid_ex.cpp.html">Kernel_Centroid</a></li><li><a href="kkmeans_ex.cpp.html">Kernel_K-Means_Clustering</a></li><li><a href="krr_regression_ex.cpp.html">Kernel_Ridge_Regression</a></li><li><a href="krls_filter_ex.cpp.html">Kernel_RLS_Filtering</a></li><li><a href="krls_ex.cpp.html">Kernel_RLS_Regression</a></li><li><a href="krr_classification_ex.cpp.html">KRR_Classification</a></li><li><a href="linear_manifold_regularizer_ex.cpp.html">Linear_Manifold_Regularizer</a></li><li><a href="logger_ex.cpp.html">Logger</a></li><li><a href="logger_ex_2.cpp.html">Logger_Advanced</a></li><li><a href="matrix_ex.cpp.html">Matrix</a></li><li><a href="matrix_expressions_ex.cpp.html">Matrix_Expressions</a></li><li><a href="member_function_pointer_ex.cpp.html">Member_Function_Pointer</a></li><li><a href="model_selection_ex.cpp.html">Model_Selection</a></li><li><a href="multiclass_classification_ex.cpp.html">Multiclass_Classification</a></li><li><a href="multithreaded_object_ex.cpp.html">Multithreaded_Object</a></li><li><a href="mlp_ex.cpp.html">Neural_Network</a></li><li><a href="least_squares_ex.cpp.html">Non-Linear Least Squares</a></li><li><a href="object_detector_ex.cpp.html">Object_Detector</a></li><li><a href="object_detector_advanced_ex.cpp.html">Object_Detector_Advanced</a></li><li><a href="svm_pegasos_ex.cpp.html">Online_SVM</a></li><li><a href="optimization_ex.cpp.html">Optimization</a></li><li><a href="pipe_ex.cpp.html">Pipe</a></li><li><a href="pipe_ex_2.cpp.html">Pipe_2</a></li><li><a href="quantum_computing_ex.cpp.html">Quantum_Computing</a></li><li><a href="queue_ex.cpp.html">Queue</a></li><li><a href="rank_features_ex.cpp.html">Rank_Features</a></li><li><a href="rvm_ex.cpp.html">Relevance_Vector_Classification</a></li><li><a href="rvm_regression_ex.cpp.html">Relevance_Vector_Regression</a></li><li><a href="sequence_labeler_ex.cpp.html">Sequence_Labeling</a></li><li><a href="sockets_ex.cpp.html">Sockets</a></li><li><a href="sockstreambuf_ex.cpp.html">Sockstreambuf</a></li><li><a href="svm_sparse_ex.cpp.html">Sparse_Vectors</a></li><li><a href="std_allocator_ex.cpp.html">Std_C++_Allocator</a></li><li><a href="svm_ex.cpp.html">Support_Vector_Machine</a></li><li><a href="svr_ex.cpp.html">Support_Vector_Regression</a></li><li><a href="surf_ex.cpp.html">SURF</a></li><li><a href="svm_rank_ex.cpp.html">SVM-Rank</a></li><li><a href="threaded_object_ex.cpp.html">Threaded_Object</a></li><li><a href="threads_ex.cpp.html">Threads</a></li><li><a href="thread_function_ex.cpp.html">Thread_Function</a></li><li><a href="thread_pool_ex.cpp.html">Thread_Pool</a></li><li><a href="timer_ex.cpp.html">Timer</a></li><li><a href="train_object_detector.cpp.html">Train_Object_Detector</a></li><li><a href="using_custom_kernels_ex.cpp.html">Using_Custom_Kernels</a></li><li><a href="xml_parser_ex.cpp.html">XML_Parser</a></li></ul></li><li><a href="faq.html">FAQ</a></li><li><a href="index.html">Home</a></li><li><a href="compile.html">How to compile</a></li><li><a href="howto_contribute.html">How to contribute</a></li><li><a href="term_index.html">Index</a></li><li><a href="intro.html">Introduction</a></li><li><a href="license.html">License</a></li><li><a href="books.html">Suggested Books</a></li></ul><br><b>Current Release</b><ul class="tree"><li><a href="change_log.html">Change Log</a></li><li><a href="release_notes.html">Release Notes</a></li><li>Version: 18.0</li></ul><br></td><td width="1"></td></tr><tr><td valign="bottom"><br><br><br><br><br><br><br><br><br>
+      Last Modified:<br>Feb 04, 2013<br><br></td></tr></table></td><td VALIGN="TOP" width="100%" style="border: 1px solid rgb(102,102,102);"><center><h1>Change Log</h1></center><u>Revision</u>: 176d221533d72e80<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Jan 06, 2013
+         (10:28:09 UTC)
+      <br><p style="margin:0.4em">Fixed a bug pointed out by Joel Nelson in the version of md5() that took an
+istream.  The bug caused the function to crash on strings longer than 56
+characters.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/md5/md5_kernel_1.cpp</div><div id="row1">dlib/test/md5.cpp</div></div><hr class="fullhr"><u>Revision</u>: 73f0ac47dea0572c<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Jan 05, 2013
+         (04:59:35 UTC)
+      <br><p style="margin:0.4em">Made test more robust and also added more print_spinner()
+calls.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/timer.cpp</div></div><hr class="fullhr"><u>Revision</u>: 9a5b6a9df32e3ab5<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Jan 04, 2013
+         (18:55:43 UTC)
+      <br><p style="margin:0.4em">clarified spec</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/image_transforms/label_connected_blobs_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 63b06558dec37696<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Jan 03, 2013
+         (17:17:10 UTC)
+      <br><p style="margin:0.4em">Added more unit tests for the forces_last_weight_to_1 stuff.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/ranking.cpp</div><div id="row1">dlib/test/svm_c_linear_dcd.cpp</div></div><hr class="fullhr"><u>Revision</u>: 9172cf246a02ff8d<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Jan 03, 2013
+         (17:15:27 UTC)
+      <br><p style="margin:0.4em">Added the forces_last_weight_to_1() option to the svm_c_linear_trainer.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_c_linear_trainer.h</div><div id="row1">dlib/svm/svm_c_linear_trainer_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 1b895293e9309e3c<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Jan 03, 2013
+         (17:02:16 UTC)
+      <br><p style="margin:0.4em">Changed svm_c_linear_dcd_trainer so that when the user forces the last weight
+to 1 it automatically disables use of the bias since that is almost certainly
+what the user will want to do.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_c_linear_dcd_trainer.h</div><div id="row1">dlib/svm/svm_c_linear_dcd_trainer_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 3657bedf4f77dfa9<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Jan 03, 2013
+         (17:00:02 UTC)
+      <br><p style="margin:0.4em">Switched this code to use the oca object's ability to force a weight to 1
+instead of rolling its own implementation.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_rank_trainer.h</div></div><hr class="fullhr"><u>Revision</u>: 5f217c9f175f64b4<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Jan 03, 2013
+         (16:55:53 UTC)
+      <br><p style="margin:0.4em">Added the option to force the last weight to 1.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/optimization/optimization_oca.h</div><div id="row1">dlib/optimization/optimization_oca_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 07fe5d8f8220a58b<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Jan 22, 2012
+         (14:51:46 UTC)
+      <br><p style="margin:0.4em">relaxed test slightly</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/active_learning.cpp</div></div><hr class="fullhr"><u>Revision</u>: 91f6db2313534b40<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Aug 10, 2011
+         (-03:14:16 UTC)
+      <br><p style="margin:0.4em">Relaxed test slightly to avoid false alarms.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/svm_c_linear_dcd.cpp</div></div><hr class="fullhr"><u>Revision</u>: 80c2c0e6f9cc584f<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 29, 2012
+         (-05:08:03 UTC)
+      <br><p style="margin:0.4em">A minor change to avoid a warning from gcc 4.4</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/gui_widgets/widgets.cpp</div></div><hr class="fullhr"><u>Revision</u>: e248635e6fa260d6<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 28, 2012
+         (18:39:49 UTC)
+      <br><p style="margin:0.4em">These changes don't actually change what the code does, but they
+avoid some silly warnings from gcc 4.4 and 4.5.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/matrix/matrix_data_layout.h</div><div id="row1">dlib/matrix/matrix_eigenvalue.h</div></div><hr class="fullhr"><u>Revision</u>: 5eae79820af9af54<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 28, 2012
+         (14:33:43 UTC)
+      <br><p style="margin:0.4em">Fixed a double unlock bug.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/gui_core/gui_core_kernel_1.cpp</div></div><hr class="fullhr"><u>Revision</u>: 67d90ba5d9b39c7c<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 28, 2012
+         (14:19:00 UTC)
+      <br><p style="margin:0.4em">Fixed spelling error in comment.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/threads/auto_mutex_extension_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 2ebc3014dd3618af<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 28, 2012
+         (14:02:38 UTC)
+      <br><p style="margin:0.4em">Changed the thread_pool so it uses auto_mutex::unlock() in the appropriate places
+instead of mutex::unlock().</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/threads/thread_pool_extension.cpp</div><div id="row1">dlib/threads/thread_pool_extension.h</div></div><hr class="fullhr"><u>Revision</u>: b7916099077b26a3<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 28, 2012
+         (14:01:10 UTC)
+      <br><p style="margin:0.4em">Added auto_mutex::unlock()</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/threads/auto_mutex_extension.h</div><div id="row1">dlib/threads/auto_mutex_extension_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: dab238356df03eb6<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 28, 2012
+         (14:14:31 UTC)
+      <br><p style="margin:0.4em">Changed the spec for mutex::unlock() to say that it is illegal for a thread to
+unlock a dlib::mutex it doesn't own.  This is technically a non-backwards
+compatible change to the API but it has always been implemented in a way that
+didn't allow this kind of double unlock() on non-Windows platforms.
+Additionally, the recent change to the dlib::mutex implementation on windows
+also no longer allows this kind of double unlock.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/threads/threads_kernel_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: b7e911c3a25e875c<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 28, 2012
+         (10:22:02 UTC)
+      <br><p style="margin:0.4em">Added some polynomial drawing to the testing gui</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/gui/main.cpp</div></div><hr class="fullhr"><u>Revision</u>: 4db188d04cab990e<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 28, 2012
+         (09:50:30 UTC)
+      <br><p style="margin:0.4em">Improved unit test repeatability.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/svm_c_linear_dcd.cpp</div></div><hr class="fullhr"><u>Revision</u>: f0efd5c68b02d25f<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 28, 2012
+         (09:38:15 UTC)
+      <br><p style="margin:0.4em">Switched the windows implementation of dlib::mutex to use a CRITICAL_SECTION instead
+of a "mutex" (i.e. the thing made by CreateMutex()) since a critical section does the
+same thing but faster.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/threads/threads_kernel_1.h</div></div><hr class="fullhr"><u>Revision</u>: 0ebce655ed55e5b7<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 28, 2012
+         (06:49:41 UTC)
+      <br><p style="margin:0.4em">changed the array2d overloads to read/write all the data in one block.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/array2d/serialize_pixel_overloads.h</div></div><hr class="fullhr"><u>Revision</u>: 645b86e4fc908e96<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 28, 2012
+         (05:23:39 UTC)
+      <br><p style="margin:0.4em">clarified spec</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/statistics/statistics_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 72c5f30110ff678d<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 28, 2012
+         (05:22:42 UTC)
+      <br><p style="margin:0.4em">Added a bunch of THREAD SAFETY blocks to the specs for various machine learning
+function objects.  In general, I noted that in most cases they are safe to use
+from multiple threads so long as they are not modified.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/graph_cuts/graph_labeler_abstract.h</div><div id="row1">dlib/svm/assignment_function_abstract.h</div><div id="row2">dlib/svm/function_abstract.h</div><div id="row1">dlib/svm/kernel_abstract.h</div><div id="row2">dlib/svm/one_vs_all_decision_function_abstract.h</div><div id="row1">dlib/svm/one_vs_one_decision_function_abstract.h</div><div id="row2">dlib/svm/sequence_labeler_abstract.h</div><div id="row1">dlib/svm/sparse_kernel_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 0833e09ac3cb0891<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 28, 2012
+         (04:10:57 UTC)
+      <br><p style="margin:0.4em">Relaxed test slightly to avoid false alarm in visual studio 2005</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/svm_c_linear_dcd.cpp</div></div><hr class="fullhr"><u>Revision</u>: 7b5f60843171d7e6<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 28, 2012
+         (03:27:20 UTC)
+      <br><p style="margin:0.4em">A minor change to avoid a warning in visual studio.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/assert.h</div></div><hr class="fullhr"><u>Revision</u>: 006c0af1cb0e80b8<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 27, 2012
+         (11:23:54 UTC)
+      <br><p style="margin:0.4em">relaxed test a little</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/svm_c_linear_dcd.cpp</div></div><hr class="fullhr"><u>Revision</u>: 46559705402bc562<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 27, 2012
+         (10:58:43 UTC)
+      <br><p style="margin:0.4em">Renamed a variable to avoid a name conflict in visual studio 2005</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/matrix/matrix_expressions.h</div></div><hr class="fullhr"><u>Revision</u>: 0da5cbe2a43d66ee<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 27, 2012
+         (10:56:56 UTC)
+      <br><p style="margin:0.4em">Changed how murmur hash was used in find_max_factor_graph_nmplp to avoid a
+violation of the strict aliasing rule.  This fixes a bug which caused
+find_max_factor_graph_nmplp() to not work properly on some compilers.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/optimization/find_max_factor_graph_nmplp.h</div></div><hr class="fullhr"><u>Revision</u>: 4916690820e4fc86<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 27, 2012
+         (10:28:55 UTC)
+      <br><p style="margin:0.4em">Relaxed test slightly</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/svm_c_linear_dcd.cpp</div></div><hr class="fullhr"><u>Revision</u>: 85343a10899bbe46<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 27, 2012
+         (10:06:51 UTC)
+      <br><p style="margin:0.4em">Changed to avoid compiler errors in visual studio</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/general_hash/random_hashing.h</div></div><hr class="fullhr"><u>Revision</u>: 0ee2574847ffeeaf<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Aug 09, 2011
+         (14:08:46 UTC)
+      <br><p style="margin:0.4em">Added some casts to avoid warnings in gcc 4.1.2</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/gui_widgets/canvas_drawing.h</div></div><hr class="fullhr"><u>Revision</u>: 2d1e26de33dbd246<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Aug 09, 2011
+         (14:07:39 UTC)
+      <br><p style="margin:0.4em">Changed slightly to avoid compiler error in gcc 4.1.2</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/general_hash/random_hashing.h</div></div><hr class="fullhr"><u>Revision</u>: 6cc6b0853c3a0f3d<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 27, 2012
+         (09:43:13 UTC)
+      <br><p style="margin:0.4em">Made tests more robust</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/active_learning.cpp</div></div><hr class="fullhr"><u>Revision</u>: f22c56b0c4186a48<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 27, 2012
+         (09:09:20 UTC)
+      <br><p style="margin:0.4em">Added unit tests for rank_unlabeled_training_samples()</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/active_learning.h</div><div id="row1">dlib/test/CMakeLists.txt</div><div id="row2">dlib/test/makefile</div></div><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/test/active_learning.cpp</div></div><hr class="fullhr"><u>Revision</u>: aa784cf7f60900be<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 27, 2012
+         (06:52:06 UTC)
+      <br><p style="margin:0.4em">Added rank_unlabeled_training_samples()</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm.h</div></div><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/svm/active_learning.h</div><div id="row1">dlib/svm/active_learning_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 76113c7d044cd71a<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 27, 2012
+         (06:47:01 UTC)
+      <br><p style="margin:0.4em">Made the matrix_exp iterator a proper iterator</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/matrix/matrix_exp.h</div></div><hr class="fullhr"><u>Revision</u>: a097c936b0ac3bbc<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 25, 2012
+         (05:22:06 UTC)
+      <br><p style="margin:0.4em">Added a mat() overload for cv_image.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/opencv/cv_image.h</div><div id="row1">dlib/opencv/cv_image_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: fa4a5a835e1973b9<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 25, 2012
+         (04:59:07 UTC)
+      <br><p style="margin:0.4em">Added a config.h file that can be used to permanently enable or disable
+asserts when creating a shared library for dlib.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/assert.h</div></div><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/config.h</div></div><hr class="fullhr"><u>Revision</u>: ec66d50f9c663536<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 24, 2012
+         (-05:15:34 UTC)
+      <br><p style="margin:0.4em">Added another mat() overload for Eigen matrices.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/matrix/matrix_mat.h</div><div id="row1">dlib/matrix/matrix_mat_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 018d6e708e0de84b<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 23, 2012
+         (18:43:53 UTC)
+      <br><p style="margin:0.4em">Added a mat() overload that works with Armadillo matrices.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/matrix/matrix_mat.h</div><div id="row1">dlib/matrix/matrix_mat_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 47fcd1c3f712f7db<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 23, 2012
+         (18:06:34 UTC)
+      <br><p style="margin:0.4em">Added unit tests for matrix iterators.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/matrix4.cpp</div></div><hr class="fullhr"><u>Revision</u>: ac475701f59270a4<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 23, 2012
+         (17:06:18 UTC)
+      <br><p style="margin:0.4em">Added STL style begin() and end() methods to matrix and matrix_exp.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/matrix/matrix.h</div><div id="row1">dlib/matrix/matrix_abstract.h</div><div id="row2">dlib/matrix/matrix_exp.h</div><div id="row1">dlib/matrix/matrix_exp_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: ad0ab0d468069919<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 23, 2012
+         (09:03:36 UTC)
+      <br><p style="margin:0.4em">All I did in this change was rename calls to array_to_matrix(),
+vector_to_matrix(), pointer_to_column_vector(), and pointer_to_matrix() to
+mat() (in addition to adding a few more mat() overloads for certain things).</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/clustering/modularity_clustering.h</div><div id="row1">dlib/filtering/rls_filter.h</div><div id="row2">dlib/gui_widgets/widgets_abstract.h</div><div id="row1">dlib/image_keypoint/fine_hog_image.h</div><div id="row2">dlib/image_keypoint/fine_hog_image_abstract.h</div><div id="row1">dlib/image_keypoint/hog.h</div><div id="row2">dlib/image_keypoint/hog_abstract.h</div><div id="row1">dlib/image_processing/scan_image.h</div><div id="row2">dlib/image_transforms/assign_image.h</div><div id="row1">dlib/image_transforms/assign_image_abstract.h</div><div id="row2">dlib/image_transforms/integral_image_abstract.h</div><div id="row1">dlib/image_transforms/interpolation.h</div><div id="row2">dlib/image_transforms/label_connected_blobs_abstract.h</div><div id="row1">dlib/image_transforms/spatial_filtering.h</div><div id="row2">dlib/lsh/create_random_projection_hash.h</div><div id="row1">dlib/optimization/find_max_factor_graph_nmplp.h</div><div id="row2">dlib/optimization/max_cost_assignment.h</div><div id="row1">dlib/optimization/max_sum_submatrix.h</div><div id="row2">dlib/optimization/optimization_bobyqa.h</div><div id="row1">dlib/optimization/optimization_least_squares.h</div><div id="row2">dlib/optimization/optimization_least_squares_abstract.h</div><div id="row1">dlib/optimization/optimization_oca.h</div><div id="row2">dlib/optimization/optimization_solve_qp2_using_smo.h</div><div id="row1">dlib/optimization/optimization_solve_qp2_using_smo_abstract.h</div><div id="row2">dlib/sliding_buffer/circular_buffer.h</div><div id="row1">dlib/sliding_buffer/circular_buffer_abstract.h</div><div id="row2">dlib/statistics/random_subset_selector.h</div><div id="row1">dlib/statistics/random_subset_selector_abstract.h</div><div id="row2">dlib/statistics/statistics.h</div><div id="row1">dlib/statistics/statistics_abstract.h</div><div id="row2">dlib/svm/cross_validate_object_detection_trainer.h</div><div id="row1">dlib/svm/empirical_kernel_map.h</div><div id="row2">dlib/svm/empirical_kernel_map_abstract.h</div><div id="row1">dlib/svm/feature_ranking.h</div><div id="row2">dlib/svm/feature_ranking_abstract.h</div><div id="row1">dlib/svm/kcentroid.h</div><div id="row2">dlib/svm/kkmeans.h</div><div id="row1">dlib/svm/kkmeans_abstract.h</div><div id="row2">dlib/svm/krls.h</div><div id="row1">dlib/svm/krr_trainer.h</div><div id="row2">dlib/svm/krr_trainer_abstract.h</div><div id="row1">dlib/svm/linearly_independent_subset_finder.h</div><div id="row2">dlib/svm/linearly_independent_subset_finder_abstract.h</div><div id="row1">dlib/svm/pegasos.h</div><div id="row2">dlib/svm/ranking_tools.h</div><div id="row1">dlib/svm/rbf_network.h</div><div id="row2">dlib/svm/rbf_network_abstract.h</div><div id="row1">dlib/svm/reduced.h</div><div id="row2">dlib/svm/reduced_abstract.h</div><div id="row1">dlib/svm/roc_trainer.h</div><div id="row2">dlib/svm/roc_trainer_abstract.h</div><div id="row1">dlib/svm/rr_trainer.h</div><div id="row2">dlib/svm/rr_trainer_abstract.h</div><div id="row1">dlib/svm/rvm.h</div><div id="row2">dlib/svm/rvm_abstract.h</div><div id="row1">dlib/svm/sort_basis_vectors.h</div><div id="row2">dlib/svm/sort_basis_vectors_abstract.h</div><div id="row1">dlib/svm/sparse_vector.h</div><div id="row2">dlib/svm/sparse_vector_abstract.h</div><div id="row1">dlib/svm/structural_svm_problem.h</div><div id="row2">dlib/svm/structural_svm_sequence_labeling_problem.h</div><div id="row1">dlib/svm/svm.h</div><div id="row2">dlib/svm/svm_abstract.h</div><div id="row1">dlib/svm/svm_c_ekm_trainer.h</div><div id="row2">dlib/svm/svm_c_ekm_trainer_abstract.h</div><div id="row1">dlib/svm/svm_c_linear_dcd_trainer.h</div><div id="row2">dlib/svm/svm_c_linear_dcd_trainer_abstract.h</div><div id="row1">dlib/svm/svm_c_linear_trainer.h</div><div id="row2">dlib/svm/svm_c_linear_trainer_abstract.h</div><div id="row1">dlib/svm/svm_c_trainer.h</div><div id="row2">dlib/svm/svm_c_trainer_abstract.h</div><div id="row1">dlib/svm/svm_multiclass_linear_trainer.h</div><div id="row2">dlib/svm/svm_nu_trainer.h</div><div id="row1">dlib/svm/svm_nu_trainer_abstract.h</div><div id="row2">dlib/svm/svm_one_class_trainer.h</div><div id="row1">dlib/svm/svm_one_class_trainer_abstract.h</div><div id="row2">dlib/svm/svm_threaded.h</div><div id="row1">dlib/svm/svr_trainer.h</div><div id="row2">dlib/svm/svr_trainer_abstract.h</div><div id="row1">dlib/test/assignment_learning.cpp</div><div id="row2">dlib/test/find_max_factor_graph_nmplp.cpp</div><div id="row1">dlib/test/find_max_factor_graph_viterbi.cpp</div><div id="row2">dlib/test/geometry.cpp</div><div id="row1">dlib/test/image.cpp</div><div id="row2">dlib/test/kernel_matrix.cpp</div><div id="row1">dlib/test/matrix.cpp</div><div id="row2">dlib/test/matrix2.cpp</div><div id="row1">dlib/test/matrix3.cpp</div><div id="row2">dlib/test/oca.cpp</div><div id="row1">dlib/test/probabilistic.cpp</div><div id="row2">dlib/test/pyramid_down.cpp</div><div id="row1">dlib/test/ranking.cpp</div><div id="row2">dlib/test/scan_image.cpp</div><div id="row1">dlib/test/sequence_labeler.cpp</div><div id="row2">dlib/test/sldf.cpp</div><div id="row1">dlib/test/statistics.cpp</div><div id="row2">dlib/test/svm_struct.cpp</div></div><hr class="fullhr"><u>Revision</u>: 79bd632ff29363ab<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 23, 2012
+         (05:02:54 UTC)
+      <br><p style="margin:0.4em">Fixed bug in one of the new mat() functions.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/matrix/matrix_mat.h</div></div><hr class="fullhr"><u>Revision</u>: 87f6b4ec693814b9<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 23, 2012
+         (04:25:10 UTC)
+      <br><p style="margin:0.4em">Added the mat() function.  It rolls the array_to_matrix(), vector_to_matrix(),
+pointer_to_column_vector(), and pointer_to_matrix() methods all into one
+convenient interface.  Also made stddev() slightly more general.
+
+This change also deprecates the previous matrix conversion functions.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/matrix/matrix_utilities.h</div><div id="row1">dlib/matrix/matrix_utilities_abstract.h</div></div><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/matrix/matrix_mat.h</div><div id="row1">dlib/matrix/matrix_mat_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 4073dfa1dbca917e<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 22, 2012
+         (13:24:59 UTC)
+      <br><p style="margin:0.4em">Made toMat() work with matrix object in addition to array2d style images.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/opencv/to_open_cv.h</div><div id="row1">dlib/opencv/to_open_cv_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 09fc76f2ea9b847d<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 21, 2012
+         (17:27:40 UTC)
+      <br><p style="margin:0.4em">Previously, if you accidentally tried to copy between any_function instances
+with incompatible function signatures you got a really confusing error message
+from the compiler.  This change makes it so you get a much more informative
+error message.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/any/any_function_impl2.h</div></div><hr class="fullhr"><u>Revision</u>: bbf5edc4e95ed042<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 19, 2012
+         (18:00:53 UTC)
+      <br><p style="margin:0.4em">Added unit tests for svm_rank_trainer::force_last_weight_to_1()</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/ranking.cpp</div></div><hr class="fullhr"><u>Revision</u>: bf43e7207690eebe<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 19, 2012
+         (17:33:28 UTC)
+      <br><p style="margin:0.4em">Fixed a bug introduced in the last commit.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_rank_trainer.h</div></div><hr class="fullhr"><u>Revision</u>: 40916ee9008dc699<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 19, 2012
+         (17:21:50 UTC)
+      <br><p style="margin:0.4em">Added the option to force the last weight element to be 1 to the
+svm_rank_trainer.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_rank_trainer.h</div><div id="row1">dlib/svm/svm_rank_trainer_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 749bfebfa7adac1a<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 19, 2012
+         (15:01:10 UTC)
+      <br><p style="margin:0.4em">Added a pragma to avoid an inappropriate warning from visual studio 2012</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/iosockstream/iosockstream.h</div></div><hr class="fullhr"><u>Revision</u>: 7ddf617ccbf16a34<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 19, 2012
+         (14:40:42 UTC)
+      <br><p style="margin:0.4em">Relaxed the tests slightly to avoid false alarms in visual studio 2010</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/svm_c_linear_dcd.cpp</div></div><hr class="fullhr"><u>Revision</u>: 00efbbb44b78de6c<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 21, 2012
+         (11:13:29 UTC)
+      <br><p style="margin:0.4em">Updated cmake file so it can find the new version of the Intel MKL on linux.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/cmake_find_blas.txt</div></div><hr class="fullhr"><u>Revision</u>: 1420ccfc3f6c2d50<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 18, 2012
+         (14:53:49 UTC)
+      <br><p style="margin:0.4em">fixed grammar in a comment</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/server/server_http_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 3840f23b14d24718<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 17, 2012
+         (17:42:52 UTC)
+      <br><p style="margin:0.4em">clarified spec</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_c_linear_dcd_trainer_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: e4b56931f6b4771c<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 17, 2012
+         (17:27:18 UTC)
+      <br><p style="margin:0.4em">Filled out some assert error messages and the spec file.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_c_linear_dcd_trainer.h</div><div id="row1">dlib/svm/svm_c_linear_dcd_trainer_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: ec033be93dae1fe5<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 17, 2012
+         (16:41:14 UTC)
+      <br><p style="margin:0.4em">fixed some variables not being initialized.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_c_linear_dcd_trainer.h</div></div><hr class="fullhr"><u>Revision</u>: 1cc74d9f8e04f07f<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 17, 2012
+         (16:37:59 UTC)
+      <br><p style="margin:0.4em">Added unit tests for the new svm_c_linear_dcd_trainer object.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/CMakeLists.txt</div><div id="row1">dlib/test/makefile</div></div><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/test/svm_c_linear_dcd.cpp</div></div><hr class="fullhr"><u>Revision</u>: 6597f75cac2b941f<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 17, 2012
+         (15:33:34 UTC)
+      <br><p style="margin:0.4em">Fixed a bug which triggered when the last weight was forced to 1.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_c_linear_dcd_trainer.h</div></div><hr class="fullhr"><u>Revision</u>: a931a2dc74ff85d2<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 17, 2012
+         (14:15:47 UTC)
+      <br><p style="margin:0.4em">updated svm.h</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm.h</div></div><hr class="fullhr"><u>Revision</u>: 0fa11f169a794287<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 16, 2012
+         (18:10:00 UTC)
+      <br><p style="margin:0.4em">Fixed bugs in new object.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_c_linear_dcd_trainer.h</div></div><hr class="fullhr"><u>Revision</u>: dd7e4c6c0a17a437<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 16, 2012
+         (18:00:56 UTC)
+      <br><p style="margin:0.4em">Made the optimizer_state serializable.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_c_linear_dcd_trainer.h</div></div><hr class="fullhr"><u>Revision</u>: 1bfcff8ccfc1359a<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 16, 2012
+         (17:56:30 UTC)
+      <br><p style="margin:0.4em">Made this object properly warm-startable</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_c_linear_dcd_trainer.h</div></div><hr class="fullhr"><u>Revision</u>: d34a20bb1e6b4755<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 16, 2012
+         (14:24:39 UTC)
+      <br><p style="margin:0.4em">added a method to enable or disable shrinking</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_c_linear_dcd_trainer.h</div></div><hr class="fullhr"><u>Revision</u>: 639199756d5cbe12<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 16, 2012
+         (13:51:36 UTC)
+      <br><p style="margin:0.4em">Added initial implementation of the svm_c_linear_dcd_trainer.</p><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/svm/svm_c_linear_dcd_trainer.h</div><div id="row1">dlib/svm/svm_c_linear_dcd_trainer_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: d8dbea30aceda18d<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 16, 2012
+         (03:30:47 UTC)
+      <br><p style="margin:0.4em">Updated the normalized_function so that it also works with routines
+expecting something that looks like a multiclass decision function.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/function.h</div><div id="row1">dlib/svm/function_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: bc31dc15b99cdb7e<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 12, 2012
+         (15:53:50 UTC)
+      <br><p style="margin:0.4em">Added a group name feature to the command line parser.  Now it is possible to
+make print_options() print related options so that they are grouped together.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/cmd_line_parser/cmd_line_parser_kernel_1.h</div><div id="row1">dlib/cmd_line_parser/cmd_line_parser_kernel_abstract.h</div><div id="row2">dlib/cmd_line_parser/cmd_line_parser_print_1.h</div><div id="row1">dlib/interfaces/cmd_line_parser_option.h</div></div><hr class="fullhr"><u>Revision</u>: 1573cc66ac74a769<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 12, 2012
+         (14:57:59 UTC)
+      <br><p style="margin:0.4em">Made cmd_line_parser::print_options() print out some new lines at the
+end so that the user doesn't have to print them.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/cmd_line_parser/cmd_line_parser_print_1.h</div></div><hr class="fullhr"><u>Revision</u>: cd67c410034c4064<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 11, 2012
+         (18:16:17 UTC)
+      <br><p style="margin:0.4em">Added on_view_changed() callback to zoomable_region and scrollable_region gui
+widgets.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/gui_widgets/base_widgets.cpp</div><div id="row1">dlib/gui_widgets/base_widgets.h</div><div id="row2">dlib/gui_widgets/base_widgets_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 9d0eddab8db0d2ec<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 11, 2012
+         (16:34:13 UTC)
+      <br><p style="margin:0.4em">Added the find_affine_transform() routine.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/geometry/point_transforms.h</div><div id="row1">dlib/geometry/point_transforms_abstract.h</div><div id="row2">dlib/test/geometry.cpp</div></div><hr class="fullhr"><u>Revision</u>: aadb135541a243a9<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 11, 2012
+         (16:21:54 UTC)
+      <br><p style="margin:0.4em">fixed typo in spec</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/geometry/point_transforms_abstract.h</div><div id="row1">docs/docs/linear_algebra.xml</div></div><hr class="fullhr"><u>Revision</u>: 5d958a801f3beee2<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 11, 2012
+         (16:18:57 UTC)
+      <br><p style="margin:0.4em">Moved the point/vector rotation/transformation code into its own file.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/geometry.h</div><div id="row1">dlib/geometry/vector.h</div><div id="row2">dlib/geometry/vector_abstract.h</div></div><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/geometry/point_transforms.h</div><div id="row1">dlib/geometry/point_transforms_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: c19cce2467ab661e<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 11, 2012
+         (15:16:27 UTC)
+      <br><p style="margin:0.4em">Made the functions for scaling, rotating, and generally transforming images
+more general.  Previously they required the user to use the same type of image
+for both input and output.  This has been relaxed so now different typed images
+can be used.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/image_transforms/interpolation.h</div><div id="row1">dlib/image_transforms/interpolation_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 56b4dfbd75d61f69<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 11, 2012
+         (14:33:44 UTC)
+      <br><p style="margin:0.4em">fixed typo in a comment</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/pixel.h</div></div><hr class="fullhr"><u>Revision</u>: 128b019e759d6ae5<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 10, 2012
+         (18:25:17 UTC)
+      <br><p style="margin:0.4em">A minor change that makes the svm_multiclass_linear_trainer a little bit
+faster.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_multiclass_linear_trainer.h</div></div><hr class="fullhr"><u>Revision</u>: c085243e588d4594<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 10, 2012
+         (17:32:08 UTC)
+      <br><p style="margin:0.4em">Added an overload of draw_image() that's useful for drawing images
+and doing interpolation at the same time.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/gui_widgets/canvas_drawing.h</div><div id="row1">dlib/gui_widgets/canvas_drawing_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 6f5506a567eddf7e<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 09, 2012
+         (10:22:37 UTC)
+      <br><p style="margin:0.4em">fixed grammar in a comment</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/gui_widgets/canvas_drawing.h</div></div><hr class="fullhr"><u>Revision</u>: f1d0b42480becc67<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 09, 2012
+         (10:21:18 UTC)
+      <br><p style="margin:0.4em">updated a comment</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/gui_widgets/canvas_drawing.h</div></div><hr class="fullhr"><u>Revision</u>: de0ee5b754b1cf70<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 09, 2012
+         (10:16:55 UTC)
+      <br><p style="margin:0.4em">Added draw_solid_convex_polygon()</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/gui_widgets/canvas_drawing.h</div><div id="row1">dlib/gui_widgets/canvas_drawing_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 545fa6e5e43d51a6<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 09, 2012
+         (09:01:17 UTC)
+      <br><p style="margin:0.4em">A minor change to avoid unnecessary work when not using a cutting plane cache.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/structural_svm_problem.h</div></div><hr class="fullhr"><u>Revision</u>: 007f97d3fc955629<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 05, 2012
+         (18:14:20 UTC)
+      <br><p style="margin:0.4em">Fixed confusing error message.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/cmd_line_parser/cmd_line_parser_kernel_c.h</div></div><hr class="fullhr"><u>Revision</u>: e60b3e5c8338db37<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 05, 2012
+         (18:11:55 UTC)
+      <br><p style="margin:0.4em">Changed the feature extraction interfaces for the sequence labeling and
+assignment problem learning tools to also include an optional
+num_nonnegative_weights() method.  This method can be used to tell any machine
+learning tools which elements of the learned parameter vector should be
+non-negative.  As part of this change, I also removed the previous methods for
+doing this from the structural_assignment_trainer since they are now redundant.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/assignment_function_abstract.h</div><div id="row1">dlib/svm/sequence_labeler_abstract.h</div><div id="row2">dlib/svm/structural_assignment_trainer.h</div><div id="row1">dlib/svm/structural_assignment_trainer_abstract.h</div><div id="row2">dlib/svm/structural_sequence_labeling_trainer.h</div></div><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/svm/num_nonnegative_weights.h</div></div><hr class="fullhr"><u>Revision</u>: 1834fdc86fb92f7c<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 05, 2012
+         (14:36:30 UTC)
+      <br><p style="margin:0.4em">Added a version of print_options() that doesn't take an ostream but just prints
+to cout.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/cmd_line_parser/cmd_line_parser_kernel_abstract.h</div><div id="row1">dlib/cmd_line_parser/cmd_line_parser_print_1.h</div></div><hr class="fullhr"><u>Revision</u>: 32ce2c714b77646d<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Dec 05, 2012
+         (14:29:38 UTC)
+      <br><p style="margin:0.4em">Added some code to workaround a bug in certain versions of gcc.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/std_allocator.h</div></div><hr class="fullhr"><u>Revision</u>: 52fef20f9cece389<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 27, 2012
+         (16:37:36 UTC)
+      <br><p style="margin:0.4em">Added missing requirement</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/general_hash/hash_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 596ead76f4aa7519<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 25, 2012
+         (14:52:32 UTC)
+      <br><p style="margin:0.4em">Added a pragma to disable a warning from visual studio 2012.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/vectorstream/vectorstream.h</div></div><hr class="fullhr"><u>Revision</u>: 5b83a84ddc0d43e0<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 27, 2012
+         (16:28:00 UTC)
+      <br><p style="margin:0.4em">Added hash() overloads for uint32, uint64, and std::pair as well as some more
+unit tests.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/general_hash/hash.h</div><div id="row1">dlib/general_hash/hash_abstract.h</div><div id="row2">dlib/test/hash.cpp</div></div><hr class="fullhr"><u>Revision</u>: de14feb67c6efe93<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 27, 2012
+         (16:24:23 UTC)
+      <br><p style="margin:0.4em">Added murmur_hash3_3()</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/general_hash/murmur_hash3.h</div><div id="row1">dlib/general_hash/murmur_hash3_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 06669a963bb34381<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 27, 2012
+         (15:45:35 UTC)
+      <br><p style="margin:0.4em">Added murmur_hash3_2()</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/general_hash/murmur_hash3.h</div><div id="row1">dlib/general_hash/murmur_hash3_abstract.h</div><div id="row2">dlib/test/hash.cpp</div></div><hr class="fullhr"><u>Revision</u>: be7345d9a0e5ccfc<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 25, 2012
+         (11:47:25 UTC)
+      <br><p style="margin:0.4em">Reduced the number of tests because otherwise we get really close to the limit on the number
+of TCP connections in the TIME_WAIT state on Windows XP.  This results in the tests failing
+if you run them multiple times within the TIME_WAIT timeout period.  So this change makes
+the tests less likely to false alarm when run on Windows XP.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/iosockstream.cpp</div></div><hr class="fullhr"><u>Revision</u>: 691b5e5fdc1b9a43<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 25, 2012
+         (11:41:12 UTC)
+      <br><p style="margin:0.4em">Made test a little more robust</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/iosockstream.cpp</div></div><hr class="fullhr"><u>Revision</u>: f0c59862f12e1485<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 25, 2012
+         (11:32:11 UTC)
+      <br><p style="margin:0.4em">Minor changes to avoid a compiler error and warning in visual studio</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/iosockstream/iosockstream.h</div><div id="row1">dlib/vectorstream/vectorstream.h</div></div><hr class="fullhr"><u>Revision</u>: 6879e1aa596848f1<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 24, 2012
+         (11:37:04 UTC)
+      <br><p style="margin:0.4em">clarified spec</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/sparse_vector_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: f013c32b020f1fd8<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 24, 2012
+         (11:20:10 UTC)
+      <br><p style="margin:0.4em">Added some sparse_matrix_vector_multiply() unit tests.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/sparse_vector.cpp</div></div><hr class="fullhr"><u>Revision</u>: f41e00d0f9b24197<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 24, 2012
+         (11:15:12 UTC)
+      <br><p style="margin:0.4em">Added an overload of sparse_matrix_vector_multiply() that multiplies a dense
+matrix with a sparse vector.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/sparse_vector.h</div><div id="row1">dlib/svm/sparse_vector_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: b3f7cd63e3f2139d<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 24, 2012
+         (10:59:13 UTC)
+      <br><p style="margin:0.4em">Added overloads of sparse_matrix_vector_multiply() that return their result
+like normal rather than passing it back by reference.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/sparse_vector.h</div><div id="row1">dlib/svm/sparse_vector_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 34d4e1e8e8ca4491<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 24, 2012
+         (10:07:20 UTC)
+      <br><p style="margin:0.4em">Clarified spec</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/sparse_vector_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: fa2a44d572f26e58<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 24, 2012
+         (09:48:27 UTC)
+      <br><p style="margin:0.4em">Added missing assert</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/matrix/matrix_utilities.h</div></div><hr class="fullhr"><u>Revision</u>: 8517bee062b3b294<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 24, 2012
+         (09:46:13 UTC)
+      <br><p style="margin:0.4em">Added gaussian_randm()</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/matrix/matrix_utilities.h</div><div id="row1">dlib/matrix/matrix_utilities_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: e54fbba4df6ea27e<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 24, 2012
+         (08:57:25 UTC)
+      <br><p style="margin:0.4em">Added unit tests for uniform_random_hash() and gaussian_random_hash().</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/rand.cpp</div></div><hr class="fullhr"><u>Revision</u>: 41af195898c891c2<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 24, 2012
+         (08:41:29 UTC)
+      <br><p style="margin:0.4em">Added uniform_random_hash() and gaussian_random_hash().</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/hash.h</div></div><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/general_hash/random_hashing.h</div><div id="row1">dlib/general_hash/random_hashing_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: c1fa2f3bd048ff22<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 24, 2012
+         (04:59:40 UTC)
+      <br><p style="margin:0.4em">Fixed compiler warning in gcc 4.4</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/hash.cpp</div></div><hr class="fullhr"><u>Revision</u>: 669fda431a7d43e7<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 24, 2012
+         (04:54:26 UTC)
+      <br><p style="margin:0.4em">Added test_murmur_hash_128_3().  Also fixed an endianness error in the hashing
+unit test code.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/general_hash/murmur_hash3.h</div><div id="row1">dlib/general_hash/murmur_hash3_abstract.h</div><div id="row2">dlib/test/hash.cpp</div></div><hr class="fullhr"><u>Revision</u>: c6def413d5ca0c22<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 24, 2012
+         (04:02:39 UTC)
+      <br><p style="margin:0.4em">Made the svm_c_linear_trainer use the risk gap to decide when to stop.  So now
+it interprets its epsilon parameter the same way the other OCA based SVM tools
+in dlib do.  It also has a more intuitive interpretation than the previous
+stopping condition.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_c_linear_trainer.h</div><div id="row1">dlib/svm/svm_c_linear_trainer_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 1aabf27c94aec401<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 23, 2012
+         (12:05:51 UTC)
+      <br><p style="margin:0.4em">Added unit tests for the new svm_rank_trainer.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/CMakeLists.txt</div><div id="row1">dlib/test/makefile</div></div><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/test/ranking.cpp</div></div><hr class="fullhr"><u>Revision</u>: 276712fb4dcc4601<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 23, 2012
+         (12:03:54 UTC)
+      <br><p style="margin:0.4em">Fixed some compile time errors related to sparse vector use.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/ranking_tools.h</div></div><hr class="fullhr"><u>Revision</u>: 5cdc8260bcef7e82<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 23, 2012
+         (11:06:38 UTC)
+      <br><p style="margin:0.4em">clarified spec</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_rank_trainer_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 1874b4a764a04558<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 23, 2012
+         (10:44:57 UTC)
+      <br><p style="margin:0.4em">Added another overload of test_ranking_function() that takes a single
+ranking_pair.  Also improved wording of comment in svm_rank_trainer_abstract.h</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/ranking_tools.h</div><div id="row1">dlib/svm/ranking_tools_abstract.h</div><div id="row2">dlib/svm/svm_rank_trainer_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: ab65d120591c63c4<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 23, 2012
+         (07:58:49 UTC)
+      <br><p style="margin:0.4em">Filled out the svm_rank_trainer's spec</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/svm_rank_trainer.h</div><div id="row1">dlib/svm/svm_rank_trainer_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 6e350c74e1c00f1d<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 23, 2012
+         (07:18:15 UTC)
+      <br><p style="margin:0.4em">Fleshed out the spec and cleaned up a few minor things.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm/ranking_tools.h</div><div id="row1">dlib/svm/ranking_tools_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: e95c9f4049c2dbd4<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 22, 2012
+         (06:51:41 UTC)
+      <br><p style="margin:0.4em">Added svm_rank_trainer.  Need to flesh out abstracts and unit tests next.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/svm.h</div></div><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/svm/ranking_tools.h</div><div id="row1">dlib/svm/ranking_tools_abstract.h</div><div id="row2">dlib/svm/svm_rank_trainer.h</div><div id="row1">dlib/svm/svm_rank_trainer_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 47690f2c2103f594<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 21, 2012
+         (07:46:56 UTC)
+      <br><p style="margin:0.4em">Changed oca solver to only call the problem's get_num_dimensions() routine once
+since it might be expensive to call depending on how the user implements it.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/optimization/optimization_oca.h</div></div><hr class="fullhr"><u>Revision</u>: 656846a6f6d48470<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 21, 2012
+         (05:03:26 UTC)
+      <br><p style="margin:0.4em">Made parse_trees_to_string() and parse_trees_to_string_tagged() a little more
+user friendly.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/optimization/find_max_parse_cky.h</div><div id="row1">dlib/optimization/find_max_parse_cky_abstract.h</div><div id="row2">dlib/test/parse.cpp</div></div><hr class="fullhr"><u>Revision</u>: 01b859d70b340101<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 18, 2012
+         (12:16:29 UTC)
+      <br><p style="margin:0.4em">Switched the bsp tools from using stringstream to vectorstream for
+serialization.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/bsp/bsp.cpp</div><div id="row1">dlib/bsp/bsp.h</div></div><hr class="fullhr"><u>Revision</u>: 56b90726453d08fa<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 18, 2012
+         (11:26:46 UTC)
+      <br><p style="margin:0.4em">Added unit tests for the vectorstream.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/CMakeLists.txt</div><div id="row1">dlib/test/makefile</div></div><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/test/vectorstream.cpp</div></div><hr class="fullhr"><u>Revision</u>: 7d4539b632a02791<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 18, 2012
+         (11:20:38 UTC)
+      <br><p style="margin:0.4em">Added seekg() and made vectorstream more robust.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/vectorstream/vectorstream.h</div><div id="row1">dlib/vectorstream/vectorstream_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: be374b2407f13fc0<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 18, 2012
+         (10:53:55 UTC)
+      <br><p style="margin:0.4em">Added the vectorstream object.</p><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/vectorstream.h</div><div id="row1">dlib/vectorstream/vectorstream.h</div><div id="row2">dlib/vectorstream/vectorstream_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 63077d5707baa12b<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 18, 2012
+         (08:09:07 UTC)
+      <br><p style="margin:0.4em">Removed cruft</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/gui_widgets/base_widgets.h</div><div id="row1">dlib/gui_widgets/widgets.h</div><div id="row2">dlib/test/gui/main.cpp</div><div id="row1">dlib/test/timer.cpp</div><div id="row2">dlib/timeout/timeout.h</div></div><hr class="fullhr"><u>Revision</u>: fdd929b2913c00c8<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 18, 2012
+         (07:58:21 UTC)
+      <br><p style="margin:0.4em">Added a comment explaining why timer_heavy exists.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/timer/timer_heavy.h</div></div><hr class="fullhr"><u>Revision</u>: d5a7fb0313c6f362<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 18, 2012
+         (07:54:23 UTC)
+      <br><p style="margin:0.4em">Just renamed the timer source files.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/all/source.cpp</div><div id="row1">dlib/timer.h</div></div><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/timer/timer.cpp</div><div id="row1">dlib/timer/timer.h</div><div id="row2">dlib/timer/timer_abstract.h</div><div id="row1">dlib/timer/timer_heavy.h</div></div><div id="logb"><div class="bsolid"><b><font color="red">Deleted</font></b></div><div id="row2">dlib/timer/timer_kernel_1.h</div><div id="row1">dlib/timer/timer_kernel_2.cpp</div><div id="row2">dlib/timer/timer_kernel_2.h</div><div id="row1">dlib/timer/timer_kernel_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 2e9a19590d9bf919<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 18, 2012
+         (07:48:19 UTC)
+      <br><p style="margin:0.4em">Converted the timer component into two single implementation components.
+These are the timer and timer_heavy objects now.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/timer.h</div><div id="row1">dlib/timer/timer_kernel_1.h</div><div id="row2">dlib/timer/timer_kernel_2.cpp</div><div id="row1">dlib/timer/timer_kernel_2.h</div></div><hr class="fullhr"><u>Revision</u>: 1916c86f34c0fb9a<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 18, 2012
+         (07:07:38 UTC)
+      <br><p style="margin:0.4em">Converted the bound_function_pointer into a single implementation component.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/bound_function_pointer.h</div><div id="row1">dlib/bound_function_pointer/bound_function_pointer_kernel_1.h</div></div><div id="logb"><div class="bsolid"><b><font color="red">Deleted</font></b></div><div id="row2">dlib/bound_function_pointer/bound_function_pointer_kernel_c.h</div></div><hr class="fullhr"><u>Revision</u>: 75c8e1881092d60a<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 18, 2012
+         (06:46:53 UTC)
+      <br><p style="margin:0.4em">Added another constructor to the linker that lets you link two connections
+right away.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/linker/linker_kernel_1.cpp</div><div id="row1">dlib/linker/linker_kernel_1.h</div><div id="row2">dlib/linker/linker_kernel_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 1f544acca6195cf8<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 18, 2012
+         (06:33:56 UTC)
+      <br><p style="margin:0.4em">Made the linker's destructor behavior a little more reasonable.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/linker/linker_kernel_1.cpp</div></div><hr class="fullhr"><u>Revision</u>: 391ac53237e3ad8b<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 18, 2012
+         (05:56:51 UTC)
+      <br><p style="margin:0.4em">fixed spelling error in comment</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/linker/linker_kernel_1.cpp</div></div><hr class="fullhr"><u>Revision</u>: 932a51ffb1aad55e<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 18, 2012
+         (05:47:59 UTC)
+      <br><p style="margin:0.4em">Turned linker into a single implementation component.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/linker.h</div><div id="row1">dlib/linker/linker_kernel_1.cpp</div><div id="row2">dlib/linker/linker_kernel_1.h</div><div id="row1">dlib/linker/linker_kernel_abstract.h</div></div><div id="logb"><div class="bsolid"><b><font color="red">Deleted</font></b></div><div id="row2">dlib/linker/linker_kernel_c.h</div></div><hr class="fullhr"><u>Revision</u>: 3def8fcd90905b47<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 18, 2012
+         (-05:29:51 UTC)
+      <br><p style="margin:0.4em">Added the parse_xml() routines</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/xml_parser/xml_parser_kernel_1.h</div><div id="row1">dlib/xml_parser/xml_parser_kernel_abstract.h</div><div id="row2">examples/xml_parser_ex.cpp</div></div><hr class="fullhr"><u>Revision</u>: ba179c911f941913<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (18:53:33 UTC)
+      <br><p style="margin:0.4em">simplified code</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/data_io/image_dataset_metadata.cpp</div></div><hr class="fullhr"><u>Revision</u>: 2ba184972080b3f0<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (18:51:24 UTC)
+      <br><p style="margin:0.4em">Turned the xml_parser into a single implementation component.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/xml_parser.h</div><div id="row1">dlib/xml_parser/xml_parser_kernel_1.h</div></div><div id="logb"><div class="bsolid"><b><font color="red">Deleted</font></b></div><div id="row2">dlib/xml_parser/xml_parser_kernel_c.h</div></div><hr class="fullhr"><u>Revision</u>: 1ec4227edd0df5ae<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (18:31:26 UTC)
+      <br><p style="margin:0.4em">Simplified member_function_pointer declarations.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/bound_function_pointer/bound_function_pointer_kernel_1.h</div><div id="row1">dlib/gui_widgets/base_widgets.h</div><div id="row2">dlib/gui_widgets/widgets.cpp</div><div id="row1">dlib/logger/logger_kernel_1.h</div><div id="row2">dlib/server/server_kernel.cpp</div><div id="row1">dlib/threads/multithreaded_object_extension.h</div><div id="row2">dlib/threads/thread_pool_extension.h</div><div id="row1">dlib/threads/threads_kernel_shared.cpp</div><div id="row2">dlib/threads/threads_kernel_shared.h</div></div><hr class="fullhr"><u>Revision</u>: 911945c605c0ebe9<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (18:16:55 UTC)
+      <br><p style="margin:0.4em">Turned the member_function_pointer into a single implementation component.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/member_function_pointer.h</div><div id="row1">dlib/member_function_pointer/make_mfp.h</div><div id="row2">dlib/member_function_pointer/make_mfp_abstract.h</div><div id="row1">dlib/member_function_pointer/member_function_pointer_kernel_1.h</div><div id="row2">dlib/test/member_function_pointer.cpp</div></div><div id="logb"><div class="bsolid"><b><font color="red">Deleted</font></b></div><div id="row2">dlib/member_function_pointer/member_function_pointer_kernel_c.h</div></div><hr class="fullhr"><u>Revision</u>: afa9c043d9515c41<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (17:43:08 UTC)
+      <br><p style="margin:0.4em">Added lambda function support to the timeout object.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/timeout/timeout.h</div><div id="row1">dlib/timeout/timeout_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: e3d02c303210702f<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (12:51:41 UTC)
+      <br><p style="margin:0.4em">Removed cruft</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/http_client/http_client.cpp</div><div id="row1">dlib/iosockstream/iosockstream.h</div><div id="row2">dlib/sockets/sockets_extensions.cpp</div></div><hr class="fullhr"><u>Revision</u>: 188bf09acd2cca95<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (12:47:35 UTC)
+      <br><p style="margin:0.4em">Turned timeout into a single implementation style object.  Therefore, now it
+can be declared as a type timeout rather than timeout::kernel_1a.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/timeout.h</div></div><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/timeout/timeout.h</div><div id="row1">dlib/timeout/timeout_abstract.h</div></div><div id="logb"><div class="bsolid"><b><font color="red">Deleted</font></b></div><div id="row2">dlib/timeout/timeout_kernel_1.h</div><div id="row1">dlib/timeout/timeout_kernel_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: ba3efe1d6142927c<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (11:39:31 UTC)
+      <br><p style="margin:0.4em">Added a method to the server object that lets a user set the graceful close
+timeout time to something other than the default of 500ms.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/server/server_kernel.cpp</div><div id="row1">dlib/server/server_kernel.h</div><div id="row2">dlib/server/server_kernel_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: a81ac2e38a049783<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (11:19:44 UTC)
+      <br><p style="margin:0.4em">Added more tests</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/iosockstream.cpp</div></div><hr class="fullhr"><u>Revision</u>: 7903c8fa36cc3ee0<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (11:08:30 UTC)
+      <br><p style="margin:0.4em">Removed more cruft</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/server/server_iostream.h</div></div><hr class="fullhr"><u>Revision</u>: 5f5ccd41b579890f<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (10:59:05 UTC)
+      <br><p style="margin:0.4em">Added unit test for iosockstream.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/CMakeLists.txt</div><div id="row1">dlib/test/makefile</div></div><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/test/iosockstream.cpp</div></div><hr class="fullhr"><u>Revision</u>: 40e3989d7eba7269<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (10:58:51 UTC)
+      <br><p style="margin:0.4em">removed cruft</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/test/sockstreambuf.cpp</div></div><hr class="fullhr"><u>Revision</u>: d0957716394d45bd<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (10:53:24 UTC)
+      <br><p style="margin:0.4em">Changed name of private logger to avoid name conflicts in derived classes.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/server/server_iostream.cpp</div><div id="row1">dlib/server/server_iostream.h</div></div><hr class="fullhr"><u>Revision</u>: bb77e1b501613f5d<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (09:21:20 UTC)
+      <br><p style="margin:0.4em">Added an iosockstream object.</p><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/iosockstream.h</div><div id="row1">dlib/iosockstream/iosockstream.h</div><div id="row2">dlib/iosockstream/iosockstream_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: f1af2dce062bb3f8<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (07:52:43 UTC)
+      <br><p style="margin:0.4em">Made close_gracefully() into a noop if called on a null pointer.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/sockets/sockets_extensions.cpp</div><div id="row1">dlib/sockets/sockets_extensions_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: 14e1405282b67fc9<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (07:02:16 UTC)
+      <br><p style="margin:0.4em">Just renamed some files and turned the sockstreambuf into a single
+implementation component.  So no real functional code changes in this commit.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/all/source.cpp</div><div id="row1">dlib/sockstreambuf.h</div></div><div id="logb"><div class="bsolid"><b><font color="blue">Added</font></b></div><div id="row2">dlib/sockstreambuf/sockstreambuf.cpp</div><div id="row1">dlib/sockstreambuf/sockstreambuf.h</div><div id="row2">dlib/sockstreambuf/sockstreambuf_abstract.h</div><div id="row1">dlib/sockstreambuf/sockstreambuf_unbuffered.cpp</div><div id="row2">dlib/sockstreambuf/sockstreambuf_unbuffered.h</div></div><div id="logb"><div class="bsolid"><b><font color="red">Deleted</font></b></div><div id="row2">dlib/sockstreambuf/sockstreambuf_kernel_1.cpp</div><div id="row1">dlib/sockstreambuf/sockstreambuf_kernel_1.h</div><div id="row2">dlib/sockstreambuf/sockstreambuf_kernel_2.cpp</div><div id="row1">dlib/sockstreambuf/sockstreambuf_kernel_2.h</div><div id="row2">dlib/sockstreambuf/sockstreambuf_kernel_abstract.h</div></div><hr class="fullhr"><u>Revision</u>: a473bec289d5410c<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 17, 2012
+         (07:01:15 UTC)
+      <br><p style="margin:0.4em">minor cleanup</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/bsp/bsp.cpp</div></div><hr class="fullhr"><u>Revision</u>: 01151069bb40a979<br><u>Author</u>: <a href="mailto:davis@dlib.net">Davis King</a><br><u>Date</u>: Nov 15, 2012
+         (14:05:37 UTC)
+      <br><p style="margin:0.4em">Added parse_trees_to_string() and parse_trees_to_string_tagged().  Also made
+the output slightly nicer looking.</p><div id="logb"><div class="bsolid"><b><font color="black">Modified</font></b></div><div id="row2">dlib/optimization/find_max_parse_cky.h</div><div id="row1">dlib/optimization/find_max_parse_cky_abstract.h</div><div id="row2">dlib/test/parse.cpp</div></div><hr class="fullhr"><br><center><a href="old_change_log.html">Old Change Logs</a></center><br></td></tr></table></div></body></html>

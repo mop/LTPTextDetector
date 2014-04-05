@@ -1,0 +1,9 @@
+-I/usr/include/opencv
+-I/usr/include
+-I/home/nax/Projects/aktuell/text-detection/icdar/opencv/include
+-I/home/nax/Projects/aktuell/text-detection/icdar/opencv/3rdparty/dlib-18.0
+-I/home/nax/Projects/aktuell/text-detection/icdar/opencv/detector/include
+-I/usr/lib/eigen3
+-o
+/home/nax/Projects/aktuell/text-detection/icdar/opencv/src/moc_LabelWidget.cxx
+/home/nax/Projects/aktuell/text-detection/icdar/opencv/src/LabelWidget.h

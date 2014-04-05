@@ -1,0 +1,9 @@
+-I/usr/include/opencv
+-I/usr/include
+-I/home/nax/Projects/aktuell/ltp_text_detector/.
+-I/home/nax/Projects/aktuell/ltp_text_detector/3rdparty/dlib-18.0
+-I/home/nax/Projects/aktuell/ltp_text_detector/detector
+-I/usr/include/eigen3
+-o
+/home/nax/Projects/aktuell/ltp_text_detector/text_detector/moc_LabelWidget.cxx
+/home/nax/Projects/aktuell/ltp_text_detector/text_detector/LabelWidget.h
