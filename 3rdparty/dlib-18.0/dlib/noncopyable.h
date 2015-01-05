@@ -9,6 +9,8 @@
 
 #ifndef BOOST_NONCOPYABLE_HPP_INCLUDED
 #define BOOST_NONCOPYABLE_HPP_INCLUDED
+#ifndef BOOST_CORE_NONCOPYABLE_HPP
+#define BOOST_CORE_NONCOPYABLE_HPP
 
 namespace boost 
 {
@@ -36,6 +38,7 @@ namespace boost
 
 } // namespace boost
 
+#endif // BOOST_CORE_NONCOPYABLE_HPP
 #endif // BOOST_NONCOPYABLE_HPP_INCLUDED
 
 namespace dlib

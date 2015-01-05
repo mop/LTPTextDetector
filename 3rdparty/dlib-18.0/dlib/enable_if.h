@@ -16,6 +16,8 @@
 
 #ifndef BOOST_UTILITY_ENABLE_IF_HPP
 #define BOOST_UTILITY_ENABLE_IF_HPP
+#ifndef BOOST_CORE_ENABLE_IF_HPP
+#define BOOST_CORE_ENABLE_IF_HPP
 
 // Even the definition of enable_if causes problems on some compilers,
 // so it's macroed out for all compilers that do not support SFINAE
@@ -118,6 +120,8 @@ namespace boost
 
 #endif // BOOST_NO_SFINAE
 
+
+#endif // BOOST_CORE_ENABLE_IF_HPP
 #endif // BOOST_UTILITY_ENABLE_IF_HPP
 
 namespace dlib
