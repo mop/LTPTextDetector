@@ -74,6 +74,7 @@ message("Using eigen3: ${EIGEN3_INCLUDE_DIR}")
 
 add_library(text_detect SHARED ${library_src})
 set_target_properties(text_detect PROPERTIES OUTPUT_NAME text_detect)
+target_link_libraries(text_detect ${OpenCV_LIBS} ${BOOST_LIBRARIES} ${Dlib_LIBRARIES} ${OpenMP_EXE_LINKER_FLAGS})
 
 execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory bin)
 
